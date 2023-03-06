@@ -3,7 +3,7 @@
 Members: Desereé Frink-Larcart, Michael Wade
 
 ## Built With
-List here all the dependencies of your project (including version). For example:
+Listed here are all of the dependencies of this project (including version):
 
 * [Python 3.6.8](https://www.python.org/)
 * [Java 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
