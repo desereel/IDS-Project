@@ -23,6 +23,11 @@ To get a local copy up and running follow these simple example steps.
 
 3. Ensure listed Maven dependency is installed locally
 
+4. Install the NSEpy library to extract historical and realtime data from NSE's website
+   ```sh
+   pip install nsepy
+   ```
+
 ### Installation
 
 1. Clone the repo
