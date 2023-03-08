@@ -1,0 +1,25 @@
+text:topFive,What are the top 5 cryptocurrencies, in terms of daily movers?
+text:topFive,Name the top 5 cryptocurrencies, in terms of daily movers?
+text:topFive,top 5 cryptocurrencies in daily movers?
+text:topFive,What are the 5 highest cryptos in terms of daily movers?
+text:topFive,List the top five cryptos when considering daily movers
+text:dividend,what is the yearly dividend of Apple
+text:dividend,yearly dividend of Apple
+text:dividend,give me the dividend of Apple
+text:dividend,I wish I knew the yearly dividend of Apple
+text:dividend,can you tell me the yearly dividend of AAPL
+text:volume,what is the current volume of Google
+text:volume,give me the current volume of Google
+text:volume,I wish I knew the current volume of Google
+text:volume,Display the volume throughout Google's trading day
+text:volume,volume of google
+chart:candle,Grab the 6 month candlestick pattern of Apple
+chart:candle,what does the 6 month candlestick pattern of Apple look like
+chart:candle,I wish I could see the candlestick patten of Apple
+chart:candle,apple 6 month candlestick
+chart:candle,I need the 6 month candlestick pattern of Apple
+text:trend,Is Apple experiencing a downward trend this weeK?
+text:trend,Apple downward trend?
+text:trend,is Apple showing a downward trend currently?
+text:trend,what type of trend is Apple showing?
+text:trend,I wish I knew if Apple was experiencing a downward trend. 
