@@ -17,4 +17,4 @@ def ticker_data(ticker, start, end):
 	df.index = df.Date
 	return df
 
-ticker_data(AAPL, date(2015, 1, 1), date(2015, 1, 10))
+print(ticker_data("SBIN", date(2020, 1, 1), date(2020, 1, 10)))
