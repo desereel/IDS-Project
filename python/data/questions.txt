@@ -22,4 +22,29 @@ text:trend,Is Apple experiencing a downward trend this weeK?
 text:trend,Apple downward trend?
 text:trend,is Apple showing a downward trend currently?
 text:trend,what type of trend is Apple showing?
-text:trend,I wish I knew if Apple was experiencing a downward trend. 
+text:trend,I wish I knew if Apple was experiencing a downward trend.
+text:currPrice,What is the current share price of Amazon?
+text:currPrice,Can you give me the valuation of Amazon per share?
+text:currPrice,What is the price of Amazon's stock right now?
+text:currPrice,How much is Amazon's stock worth at the moment?
+text:currPrice,What is the current market value of Amazon's shares?
+text:priceChange,How much has Amazon's stock price changed over the past week?
+text:priceChange,Can you provide me with the percentage change in Amazon's stock price for the previous week?
+text:priceChange,What was the percentage change in Amazon's stock price for the week that just ended?
+text:priceChange,Has Amazon's stock price increased or decreased in the past week? By how much?
+text:priceChange,What was the weekly price change percentage for Amazon's shares?
+text:events,When is Amazon's earnings call scheduled for?
+text:events,Can you tell me the date of Amazon's upcoming earnings call?
+text:events,What event is taking place for Amazon on Friday the 3rd?
+text:events,What important event is happening for Amazon on Friday the 3rd?
+text:events,What is the event that Amazon will hold on Friday the 3rd?
+text:news,What are some recent articles written about Amazon?
+text:news,Can you provide me with the links to the latest news articles about Amazon?
+text:news,What are the three most recent news articles about Amazon?
+text:news,Which news sites have published recent articles about Amazon?
+text:news,What is the latest news about Amazon and where can I find it?
+text:history,What was the share price of Amazon last Friday?
+text:history,Can you give me the closing price of Amazon's stock from Friday the 3rd?
+text:history,What was the value of Amazon's shares on Friday the 3rd?
+text:history,What was the price per share of Amazon last Friday?
+text:history,How much did Amazon's stock cost per share on Friday the 3rd?
