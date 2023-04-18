@@ -4,6 +4,7 @@ import edu.nd.cse.ids.stocks.messages.*;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -42,6 +43,8 @@ public class StockNLG
 	public static void main(String[] args)
 	{
 
+		Scanner scanner = new Scanner(System.in);		
+
 		String question = "";
 		int qindex = -1;
 		for (int i = 0; i < args.length; i++) {
@@ -61,6 +64,15 @@ public class StockNLG
 		
 		question = question.trim();
 		System.out.println("You asked: " + question);
+		System.out.println("Enter the stock exchange related to your question: ");
+		String stockExchange = scanner.nextLine();
+
+		System.out.println("Retrieving " + stockExchange + " information...");
+
+		if ( stockExchange.equalsIgnoreCase("nyse")){
+
+			String fileIn = "../python/data/stock_market_data/nyse/
+
 
 	}
 }
