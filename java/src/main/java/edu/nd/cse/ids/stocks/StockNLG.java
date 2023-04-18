@@ -17,3 +17,20 @@ import simplenlg.lexicon.*;
 import simplenlg.realiser.english.*;
 import simplenlg.phrasespec.*;
 import simplenlg.features.*;
+
+public class StockNLG
+{
+	private StockReader reader;
+	private DocumentPlanner docplanner;
+	private MicroPlanner microplanner;
+	private Realizer realizer;
+
+	public StockNLG()
+	{
+	}
+
+	public static void main(String[] args)
+	{
+
+	}
+}
