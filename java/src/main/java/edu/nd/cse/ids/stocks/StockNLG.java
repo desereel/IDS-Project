@@ -25,12 +25,42 @@ public class StockNLG
 	private MicroPlanner microplanner;
 	private Realizer realizer;
 
-	public StockNLG()
+	public StockNLG(String datfile)
 	{
+
+		this.reader = new StockReader();
+		this.reader.readStockEntry(datfile);
+
+		this.docplanner = new DocumentPlanner();
+
+		this.microplanner = new MicroPlanner();
+		
+		this.realizer = new Realizer();
+
 	}
 
 	public static void main(String[] args)
 	{
+
+		String question = "";
+		int qindex = -1;
+		for (int i = 0; i < args.length; i++) {
+			
+			if (args[i].equals("-q")) {
+				qindex = i;
+			}
+		}
+
+		if ( qindex != -1 ){
+			for ( int i = qindex + 1; i < args.length; i++){
+				question = question + args[i] + " ";
+			}
+		} else {
+			question = String.join(" ", args);
+		}
+		
+		question = question.trim();
+		System.out.println("You asked: " + question);
 
 	}
 }

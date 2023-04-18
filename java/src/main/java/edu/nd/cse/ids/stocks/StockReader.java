@@ -15,4 +15,18 @@ public class StockReader
 		stocks = null;
 	}
 
+	public void readStockEntry(String filename)
+	{
+		try {
+			this.stocks = new CsvToBeanBuilder(new FileReader(filename)).withType(StockEntry.class).build().parse();
+		} catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
+	}
+
+	public List<StockEntry> getStocks()
+	{
+		return this.stocks;
+	}
 }
