@@ -28,6 +28,7 @@ public class StockNLG
 
 	public StockNLG(String datfile)
 	{
+		// Note: This will be changed, final version will not take in a datfile as we do not yet know which stock to look at (thus which file)
 
 		this.reader = new StockReader();
 		this.reader.readStockEntry(datfile);
@@ -39,6 +40,22 @@ public class StockNLG
 		this.realizer = new Realizer();
 
 	}
+
+	// Note: Will need to be changed to include a "stockIn" input when program detects stock
+	public List<String> askQuestion(String question) {
+		List<StockEntry> stockHistory = this.reader.getStockHistory();
+
+		question = "Why am I using a test question?";
+		this.docplanner.answerQuestion(stockHistory, question);
+
+        List<Message> documentPlan = this.docplanner.getMessages();
+
+        List<SPhraseSpec> sentences = this.microplanner.lexicalize(documentPlan);
+
+        return(this.realizer.realize(sentences));
+
+	}
+
 
 	public static void main(String[] args)
 	{
@@ -64,17 +81,27 @@ public class StockNLG
 		
 		question = question.trim();
 		System.out.println("You asked: " + question);
-		System.out.println("Enter the stock exchange related to your question: ");
-		String stockExchange = scanner.nextLine();
+		// System.out.println("Enter the stock exchange related to your question: ");
+		// String stockExchange = scanner.nextLine();
 
-		System.out.println("Retrieving " + stockExchange + " information...");
+		// System.out.println("Retrieving " + stockExchange + " information...");
 
-		if ( stockExchange.equalsIgnoreCase("nyse")){
+		// if ( stockExchange.equalsIgnoreCase("nyse")){
 
-			String fileIn = "../python/data/stock_market_data/nyse/"
+		// 	String fileIn = "../python/data/stock_market_data/nyse/";
 
-		}
+		// }
 
+		// decide which stock 
+		// TODO
 
+		// create StockNLG
+		StockNLG stockNLG = new StockNLG("../data/stock_market_data/sp500/csv/AAPL.csv");
+		List<String> answer = stockNLG.askQuestion(question); 
+
+        for(String sentence: answer)
+        {
+            System.out.println(sentence);
+        }
 	}
 }

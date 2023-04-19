@@ -8,25 +8,25 @@ import java.io.FileReader;
 
 public class StockReader
 {
-	private List<StockEntry> stocks;
+	private List<StockEntry> stockHistory;
 
 	public StockReader()
 	{
-		stocks = null;
+		stockHistory = null;
 	}
 
 	public void readStockEntry(String filename)
 	{
 		try {
-			this.stocks = new CsvToBeanBuilder(new FileReader(filename)).withType(StockEntry.class).build().parse();
+			this.stockHistory = new CsvToBeanBuilder(new FileReader(filename)).withType(StockEntry.class).build().parse();
 		} catch (Exception ex)
 		{
 			System.out.println(ex);
 		}
 	}
 
-	public List<StockEntry> getStocks()
+	public List<StockEntry> getStockHistory()
 	{
-		return this.stocks;
+		return this.stockHistory;
 	}
 }
