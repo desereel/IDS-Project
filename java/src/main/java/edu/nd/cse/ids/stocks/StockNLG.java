@@ -71,7 +71,9 @@ public class StockNLG
 
 		if ( stockExchange.equalsIgnoreCase("nyse")){
 
-			String fileIn = "../python/data/stock_market_data/nyse/
+			String fileIn = "../python/data/stock_market_data/nyse/"
+
+		}
 
 
 	}
