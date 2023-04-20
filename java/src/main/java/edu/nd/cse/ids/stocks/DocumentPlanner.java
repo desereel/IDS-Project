@@ -108,14 +108,14 @@ public class DocumentPlanner
         // create message list that includes the message types necessary to answer the question
         // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
         // ['text:topFive', 'text:dividend', 'text:volume', 'chart:candle', 'text:trend', 'text:currPrice', 'text:priceChange', 'text:events', 'text:news', 'text:history']
-        String[] messageList = {"numBedroom", "numBathroom", "numBeds", "numGuests", "trendMessage", "includesList", "viewType", "houseLocation", "travelDistance", "petsAllowed", "itemFeatures", "greeting", "roomType", "detailMessage"};
+        String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
         System.out.println(messageNum);
-
-        System.exit(0);
+        messageNum = 4;
+        // System.exit(0);
 
         switch(messageList[messageNum]) {
-            case "trendMessage": 
+            case "text:trend": 
                 TrendMessage m1 = new TrendMessage();
 				// TODO: add timeframe for trend
 				int period = 5; // 5 last days data
