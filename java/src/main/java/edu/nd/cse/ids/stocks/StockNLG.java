@@ -80,7 +80,7 @@ public class StockNLG
 		}
 		
 		question = question.trim();
-		System.out.println("You asked: " + question);
+		// System.out.println("You asked: " + question);
 		// System.out.println("Enter the stock exchange related to your question: ");
 		// String stockExchange = scanner.nextLine();
 

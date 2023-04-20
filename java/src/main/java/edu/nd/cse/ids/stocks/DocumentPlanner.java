@@ -77,7 +77,7 @@ public class DocumentPlanner
 
 	public void answerQuestion(List<StockEntry> stockHistory, String question) {
 
-        System.out.println(question);
+        // System.out.println(question);
 
         // use the tokenizer to create a vectorized representation of the question
         Preprocess preproc = new Preprocess();
@@ -99,18 +99,18 @@ public class DocumentPlanner
 
         INDArray output = model.output(input);
 
-        System.out.println(output);
+        // System.out.println(output);
 
         int messageNum = output.argMax(1).getInt();
 
-        System.out.println(output.argMax());
+        // System.out.println(output.argMax());
 
         // create message list that includes the message types necessary to answer the question
         // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
         // ['text:topFive', 'text:dividend', 'text:volume', 'chart:candle', 'text:trend', 'text:currPrice', 'text:priceChange', 'text:events', 'text:news', 'text:history']
         String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
-        System.out.println(messageNum);
+        // System.out.println(messageNum);
         messageNum = 4;
         // System.exit(0);
 
