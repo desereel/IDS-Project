@@ -45,7 +45,7 @@ public class StockNLG
 	public List<String> askQuestion(String question) {
 		List<StockEntry> stockHistory = this.reader.getStockHistory();
 
-		question = "Why am I using a test question?";
+		// question = "Why am I using a test question?";
 		this.docplanner.answerQuestion(stockHistory, question);
 
         List<Message> documentPlan = this.docplanner.getMessages();

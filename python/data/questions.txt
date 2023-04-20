@@ -8,46 +8,46 @@ text:topFive,List the 5 most active cryptocurrencies by daily movement.
 text:topFive,What are the top 5 cryptocurrencies with the highest daily percentage changes?
 text:topFive,Name the cryptocurrencies that have had the top 5 daily movements.
 text:topFive,Which cryptocurrencies are currently leading the daily movers list?
-text:dividend,what is the yearly dividend of Amazon
-text:dividend,yearly dividend of Amazon
-text:dividend,give me the dividend of Amazon
-text:dividend,I wish I knew the yearly dividend of Amazon
-text:dividend,can you tell me the yearly dividend of Amazon
-text:dividend,What is Amazon's annual dividend payment?
-text:dividend,Can you tell me the dividend yield of Amazon?
-text:dividend,How much does Amazon pay out in dividends annually?
-text:dividend,What is the yearly dividend rate for Amazon?
-text:dividend,I'm interested in Amazon's dividend policy, what is the annual payout?
-text:volume,what is the current volume of Amazon
-text:volume,give me the current volume of Amazon
-text:volume,I wish I knew the current volume of Amazon
-text:volume,Display the volume throughout Amazon's trading day
-text:volume,volume of Amazon
-text:volume,What is the volume of Amazon's shares right now?
-text:volume,Can you provide me with the current trading volume of Amazon?
-text:volume,How many shares of Amazon have been traded today?
-text:volume,What is the current trading volume for Amazon?
-text:volume,What is the total number of Amazon shares traded so far today?
-chart:candle,Grab the 6 month candlestick pattern of Amazon
-chart:candle,what does the 6 month candlestick pattern of Amazon look like
-chart:candle,I wish I could see the candlestick patten of Amazon
-chart:candle,Amazon 6 month candlestick
-chart:candle,I need the 6 month candlestick pattern of Amazon
-chart:candle,Can you show me the candlestick chart for Amazon's past 6 months?
-chart:candle,What does the 6-month candlestick chart for Amazon look like?
-chart:candle,Could you provide me with a candlestick chart of Amazon's past 6 months?
-chart:candle,Show me the 6-month candlestick chart for Amazon's stock.
-chart:candle,I'd like to see the candlestick chart for Amazon's stock over the last 6 months.
-text:trend,Is Amazon experiencing a downward trend this weeK?
-text:trend,Amazon downward trend?
-text:trend,is Amazon showing a downward trend currently?
-text:trend,what type of trend is Amazon showing?
-text:trend,I wish I knew if Amazon was experiencing a downward trend.
-text:trend,Is there a current trend of declining stock prices for Amazon?
-text:trend,Can you tell me if Amazon is currently experiencing a downward trend?
-text:trend,What type of trend is Amazon's stock currently showing?
-text:trend,Has Amazon's stock been trending downwards lately?
-text:trend,How has Amazon's stock price trended this week?
+text:dividend,what is the yearly dividend of Apple
+text:dividend,yearly dividend of Apple
+text:dividend,give me the dividend of Apple
+text:dividend,I wish I knew the yearly dividend of Apple
+text:dividend,can you tell me the yearly dividend of AAPL
+text:dividend,What is Apple's annual dividend payment?
+text:dividend,Can you tell me the dividend yield of Apple?
+text:dividend,How much does Apple pay out in dividends annually?
+text:dividend,What is the yearly dividend rate for AAPL?
+text:dividend,I'm interested in Apple's dividend policy, what is the annual payout?
+text:volume,what is the current volume of Google
+text:volume,give me the current volume of Google
+text:volume,I wish I knew the current volume of Google
+text:volume,Display the volume throughout Google's trading day
+text:volume,volume of google
+text:volume,What is the volume of Google's shares right now?
+text:volume,Can you provide me with the current trading volume of Google?
+text:volume,How many shares of Google have been traded today?
+text:volume,What is the current trading volume for GOOGL?
+text:volume,What is the total number of Google shares traded so far today?
+chart:candle,Grab the 6 month candlestick pattern of Apple
+chart:candle,what does the 6 month candlestick pattern of Apple look like
+chart:candle,I wish I could see the candlestick patten of Apple
+chart:candle,apple 6 month candlestick
+chart:candle,I need the 6 month candlestick pattern of Apple
+chart:candle,Can you show me the candlestick chart for Apple's past 6 months?
+chart:candle,What does the 6-month candlestick chart for AAPL look like?
+chart:candle,Could you provide me with a candlestick chart of Apple's past 6 months?
+chart:candle,Show me the 6-month candlestick chart for Apple's stock.
+chart:candle,I'd like to see the candlestick chart for Apple's stock over the last 6 months.
+text:trend,Is Apple experiencing a downward trend this weeK?
+text:trend,Apple downward trend?
+text:trend,is Apple showing a downward trend currently?
+text:trend,what type of trend is Apple showing?
+text:trend,I wish I knew if Apple was experiencing a downward trend.
+text:trend,Is there a current trend of declining stock prices for Apple?
+text:trend,Can you tell me if Apple is currently experiencing a downward trend?
+text:trend,What type of trend is Apple's stock currently showing?
+text:trend,Has Apple's stock been trending downwards lately?
+text:trend,How has Apple's stock price trended this week?
 text:currPrice,What is the current share price of Amazon?
 text:currPrice,Can you give me the valuation of Amazon per share?
 text:currPrice,What is the price of Amazon's stock right now?
