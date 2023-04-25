@@ -62,8 +62,8 @@ public class StockNLG
 
 		Scanner scanner = new Scanner(System.in);		
 
-		String question = "";
-		int qindex = -1;
+		String question = "What is the 5 day trend of Bitcoin's share price";
+		/*int qindex = -1;
 		for (int i = 0; i < args.length; i++) {
 			
 			if (args[i].equals("-q")) {
@@ -79,7 +79,7 @@ public class StockNLG
 			question = String.join(" ", args);
 		}
 		
-		question = question.trim();
+		question = question.trim();*/
 		// System.out.println("You asked: " + question);
 		// System.out.println("Enter the stock exchange related to your question: ");
 		// String stockExchange = scanner.nextLine();

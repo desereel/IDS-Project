@@ -3,7 +3,7 @@ package edu.nd.cse.ids.stocks;
 import edu.nd.cse.ids.stocks.messages.*;
 
 import edu.nd.cse.ids.stocks.Preprocess;
-
+import java.util.Scanner;
 import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
@@ -39,10 +39,10 @@ public class DocumentPlanner
 /*	private MultiLayerNetwork model;
 	private KerasTokenizer tokenizer;
 */
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String MODEL_NAME = "text-davinci-003";
-    private static final double TEMPERATURE = 1.0;
-    private static final int MAX_TOKENS = 4000;
+    private static final double TEMPERATURE = 0;
+    private static final int MAX_TOKENS = 64;
 
     private Map<String, List<String>> categories;
 	
@@ -103,21 +103,36 @@ public class DocumentPlanner
 
 */
 
-    public String classify(String text) throws Exception {
-        for (String category : categories.keySet()) {
+    public String classify(String text, String fileContents) throws Exception {
+		
+		String indication = "I am providing a list of questions and the categories they are in, separated by a colon. Please store this for future use as I will be providing a question for you to classify within these categories. Here is the list: ";
+
+        String classifier = "Now classify this question based on the previous information I provided you: ";
+
+		try{		
+			String response = generateResponse(indication + fileContents + classifier + text);
+			return response;
+		} catch ( Exception e){
+			e.printStackTrace();
+		
+		}
+//		String classifier = "Now classify this question based on the previous information I provided you: ";
+
+//		String response = generateResponse(classifier + text);
+        /*for (String category : categories.keySet()) {
             List<String> questions = categories.get(category);
             for (String question : questions) {
-                if (text.contains(question)) {
                     // User input matches a question in this category
                     // Use GPT-3 to generate a response
-                    String prompt = "Category: " + category + "\nQuestion: " + question + "\nAnswer:";
-                    String response = generateResponse(prompt + text);
-                    return category + ": " + response;
-                }
+               String prompt = "Category: " + category + "\nQuestion: " + question;
+               }
             }
         }
         // User input does not match any question in the file
-        return generateResponse(text);
+        return generateResponse(text);*/
+		
+		return null;
+
     }
 	
     private String generateResponse(String prompt) throws Exception {
@@ -128,6 +143,7 @@ public class DocumentPlanner
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Authorization", "Bearer " + API_KEY);
+       // con.setRequestProperty("Connection", "close"); // Add this line to close the connection after each use
 
         JSONObject data = new JSONObject();
         data.put("model", MODEL_NAME);
@@ -138,9 +154,15 @@ public class DocumentPlanner
         con.setDoOutput(true);
         con.getOutputStream().write(data.toString().getBytes());
 
+
+        //int responseCode = con.getResponseCode();
+        //String responseMessage = con.getResponseMessage();
+//        System.out.println("Response code: " + responseCode);
+//        System.out.println("Response message: " + responseMessage);
+
         String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
                 .reduce((a, b) -> a + b).get();
-
+		System.out.println(output);
         return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
     }
 
@@ -150,12 +172,20 @@ public class DocumentPlanner
 
         String questionsFile = "questions.txt";
 
-        categories = new HashMap<>();
+        Map<String, List<String>> categories = new HashMap<>();
 /*        ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(questionsFile);
 */
+		String fileContents = "";
+		try (Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/" + questionsFile))) {
+    		fileContents = scanner.useDelimiter("\\A").next();
+		} catch (Exception e) {
+    		e.printStackTrace();
+		}
 
-        try {
+		
+
+        /*try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + questionsFile), "UTF-8"));
       
         //Path path = Paths.get(questionsFile);
@@ -168,18 +198,20 @@ public class DocumentPlanner
                 categories.computeIfAbsent(category, k -> new ArrayList<>()).add(cat_question);
             }
             reader.close();
-
-			try {
-                String category = classify(question);
-                System.out.println(category);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        } catch (UnsupportedEncodingException e) {
+*/
+		System.out.println(fileContents);
+		try {
+			System.out.println(question);
+            String category = classify(question, fileContents);
+            System.out.println(category);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+ /*       } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         // use the tokenizer to create a vectorized representation of the question
 /*        Preprocess preproc = new Preprocess();
         String qformatted = preproc.preprocess(question);
