@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
 import java.util.Arrays;
-
+import java.io.*;
 import org.deeplearning4j.nn.modelimport.keras.preprocessing.text.KerasTokenizer;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -21,28 +21,58 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONObject;
+
 public class DocumentPlanner
 {
 
 	private List<Message> messages;
-	private MultiLayerNetwork model;
+/*	private MultiLayerNetwork model;
 	private KerasTokenizer tokenizer;
+*/
+    private static final String API_KEY = "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";
+    private static final String MODEL_NAME = "text-davinci-003";
+    private static final double TEMPERATURE = 1.0;
+    private static final int MAX_TOKENS = 4000;
+
+    private Map<String, List<String>> categories;
 	
 	public DocumentPlanner()
 	{
-		try {
+		/*try {
             // use the java dl4j library to pull in the model & tokenizer
             String simpleMlp = "qa_g_lstm.h5";
             model = KerasModelImport.importKerasSequentialModelAndWeights(simpleMlp);
             tokenizer = KerasTokenizer.fromJson("tokenizer.json");
         } catch (Exception ex) {
             ex.printStackTrace();
+        }*/
+
+/*        categories = new HashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(questionsFile));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(":");
+            String category = parts[0].trim();
+            String question = parts[1].trim();
+            categories.computeIfAbsent(category, k -> new ArrayList<>()).add(question);
         }
+        reader.close();
+*/
         messages = new LinkedList<Message>();
 	}
 
 
-	public static int[] padcrop(Integer[][] seqp, int seqlen)
+/*	public static int[] padcrop(Integer[][] seqp, int seqlen)
     {
         Integer[] seq = seqp[0];
     
@@ -71,16 +101,87 @@ public class DocumentPlanner
         return(newseq);
     }
 
+*/
 
+    public String classify(String text) throws Exception {
+        for (String category : categories.keySet()) {
+            List<String> questions = categories.get(category);
+            for (String question : questions) {
+                if (text.contains(question)) {
+                    // User input matches a question in this category
+                    // Use GPT-3 to generate a response
+                    String prompt = "Category: " + category + "\nQuestion: " + question + "\nAnswer:";
+                    String response = generateResponse(prompt + text);
+                    return category + ": " + response;
+                }
+            }
+        }
+        // User input does not match any question in the file
+        return generateResponse(text);
+    }
 	
+    private String generateResponse(String prompt) throws Exception {
 
+        String url = "https://api.openai.com/v1/completions";
+        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Authorization", "Bearer " + API_KEY);
+
+        JSONObject data = new JSONObject();
+        data.put("model", MODEL_NAME);
+        data.put("prompt", prompt);
+        data.put("max_tokens", MAX_TOKENS);
+        data.put("temperature", TEMPERATURE);
+
+        con.setDoOutput(true);
+        con.getOutputStream().write(data.toString().getBytes());
+
+        String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
+                .reduce((a, b) -> a + b).get();
+
+        return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
+    }
 
 	public void answerQuestion(List<StockEntry> stockHistory, String question) {
 
         // System.out.println(question);
 
+        String questionsFile = "questions.txt";
+
+        categories = new HashMap<>();
+/*        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(questionsFile);
+*/
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + questionsFile), "UTF-8"));
+      
+        //Path path = Paths.get(questionsFile);
+      
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                String category = parts[0].trim();
+                String cat_question = parts[1].trim();
+                categories.computeIfAbsent(category, k -> new ArrayList<>()).add(cat_question);
+            }
+            reader.close();
+
+			try {
+                String category = classify(question);
+                System.out.println(category);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // use the tokenizer to create a vectorized representation of the question
-        Preprocess preproc = new Preprocess();
+/*        Preprocess preproc = new Preprocess();
         String qformatted = preproc.preprocess(question);
         int seqlen = 200;
 
@@ -89,47 +190,45 @@ public class DocumentPlanner
 
         Integer[][] seq = this.tokenizer.textsToSequences(qs);
         int newseq[] = padcrop(seq, seqlen);
-
+*/
         // use the model to produce a prediction about what class the question belongs to
-        INDArray input = Nd4j.create(1, seqlen);
+/*        INDArray input = Nd4j.create(1, seqlen);
 
         for(int i = 0; i < seqlen; i++) {
             input.putScalar(new int[] {i}, newseq[i]);
         }
 
         INDArray output = model.output(input);
-
+*/
         // System.out.println(output);
 
-        int messageNum = output.argMax(1).getInt();
+//        int messageNum = output.argMax(1).getInt();
 
         // System.out.println(output.argMax());
 
         // create message list that includes the message types necessary to answer the question
         // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
         // ['text:topFive', 'text:dividend', 'text:volume', 'chart:candle', 'text:trend', 'text:currPrice', 'text:priceChange', 'text:events', 'text:news', 'text:history']
-        String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
+//        String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
         // System.out.println(messageNum);
-        messageNum = 4;
+  //      messageNum = 4;
         // System.exit(0);
 
-        switch(messageList[messageNum]) {
+ /*       switch(messageList[messageNum]) {
             case "text:trend": 
                 TrendMessage m1 = new TrendMessage();
 				// TODO: add timeframe for trend
 				int period = 5; // 5 last days data
                 m1.generate(stockHistory, period);
                 this.messages.add(m1);
-                break;
+                break;*/
             // case "numBathroom":
             //     NumBathroomMessage m2 = new NumBathroomMessage();
             //     m2.generate(house);
             //     this.messages.add(m2);
             //     break;
 		}
-    }
-
 
     public List<Message> getMessages()
     {
