@@ -39,69 +39,25 @@ public class DocumentPlanner
 /*	private MultiLayerNetwork model;
 	private KerasTokenizer tokenizer;
 */
-    private static final String API_KEY = "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";
+    // private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String MODEL_NAME = "text-davinci-003";
     private static final double TEMPERATURE = 0;
     private static final int MAX_TOKENS = 64;
+
+    private String ticker;
 
     private Map<String, List<String>> categories;
 	
 	public DocumentPlanner()
 	{
-		/*try {
-            // use the java dl4j library to pull in the model & tokenizer
-            String simpleMlp = "qa_g_lstm.h5";
-            model = KerasModelImport.importKerasSequentialModelAndWeights(simpleMlp);
-            tokenizer = KerasTokenizer.fromJson("tokenizer.json");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
-
-/*        categories = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(questionsFile));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(":");
-            String category = parts[0].trim();
-            String question = parts[1].trim();
-            categories.computeIfAbsent(category, k -> new ArrayList<>()).add(question);
-        }
-        reader.close();
-*/
         messages = new LinkedList<Message>();
 	}
 
 
-/*	public static int[] padcrop(Integer[][] seqp, int seqlen)
-    {
-        Integer[] seq = seqp[0];
-    
-        int[] newseq = new int[seqlen];
-        int i = 0;
-        
-        int diff = seq.length - seqlen;
-        int itmax = seqlen + diff;
-        
-        if(diff < 0)
-        {
-            diff = 0;
-            itmax = seq.length;
-        }
-        
-        for (int j=diff; j<itmax; j++)
-        {
-            if(seq.length < 1)
-                newseq[i] = 1;
-            else
-                newseq[i] = seq[j];
-            
-            i++;
-        }
-        
-        return(newseq);
+    public void clearMessages(){
+        messages = new LinkedList<Message>();
     }
-
-*/
 
     public String classify(String text, String fileContents) throws Exception {
 		
@@ -116,21 +72,7 @@ public class DocumentPlanner
 			e.printStackTrace();
 		
 		}
-//		String classifier = "Now classify this question based on the previous information I provided you: ";
 
-//		String response = generateResponse(classifier + text);
-        /*for (String category : categories.keySet()) {
-            List<String> questions = categories.get(category);
-            for (String question : questions) {
-                    // User input matches a question in this category
-                    // Use GPT-3 to generate a response
-               String prompt = "Category: " + category + "\nQuestion: " + question;
-               }
-            }
-        }
-        // User input does not match any question in the file
-        return generateResponse(text);*/
-		
 		return null;
 
     }
@@ -155,14 +97,9 @@ public class DocumentPlanner
         con.getOutputStream().write(data.toString().getBytes());
 
 
-        //int responseCode = con.getResponseCode();
-        //String responseMessage = con.getResponseMessage();
-//        System.out.println("Response code: " + responseCode);
-//        System.out.println("Response message: " + responseMessage);
-
         String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
                 .reduce((a, b) -> a + b).get();
-		System.out.println(output);
+		// System.out.println(output);
         return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
     }
 
@@ -183,84 +120,25 @@ public class DocumentPlanner
     		e.printStackTrace();
 		}
 
-		
+        String category = "";
 
-        /*try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + questionsFile), "UTF-8"));
-      
-        //Path path = Paths.get(questionsFile);
-      
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                String category = parts[0].trim();
-                String cat_question = parts[1].trim();
-                categories.computeIfAbsent(category, k -> new ArrayList<>()).add(cat_question);
-            }
-            reader.close();
-*/
-		System.out.println(fileContents);
 		try {
 			System.out.println(question);
-            String category = classify(question, fileContents);
+            category = classify(question, fileContents);
             System.out.println(category);
         } catch (Exception e){
             e.printStackTrace();
         }
- /*       } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        // use the tokenizer to create a vectorized representation of the question
-/*        Preprocess preproc = new Preprocess();
-        String qformatted = preproc.preprocess(question);
-        int seqlen = 200;
 
-        String[] qs = new String[1];
-        qs[0] = qformatted;
-
-        Integer[][] seq = this.tokenizer.textsToSequences(qs);
-        int newseq[] = padcrop(seq, seqlen);
-*/
-        // use the model to produce a prediction about what class the question belongs to
-/*        INDArray input = Nd4j.create(1, seqlen);
-
-        for(int i = 0; i < seqlen; i++) {
-            input.putScalar(new int[] {i}, newseq[i]);
+        if(category.contains("text:trend")) {
+            TrendMessage m1 = new TrendMessage();
+            int period = 5; // must pull from prompts
+            m1.generate(stockHistory, period);
+            this.messages.add(m1);
         }
 
-        INDArray output = model.output(input);
-*/
-        // System.out.println(output);
 
-//        int messageNum = output.argMax(1).getInt();
-
-        // System.out.println(output.argMax());
-
-        // create message list that includes the message types necessary to answer the question
-        // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
-        // ['text:topFive', 'text:dividend', 'text:volume', 'chart:candle', 'text:trend', 'text:currPrice', 'text:priceChange', 'text:events', 'text:news', 'text:history']
-//        String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
-
-        // System.out.println(messageNum);
-  //      messageNum = 4;
-        // System.exit(0);
-
- /*       switch(messageList[messageNum]) {
-            case "text:trend": 
-                TrendMessage m1 = new TrendMessage();
-				// TODO: add timeframe for trend
-				int period = 5; // 5 last days data
-                m1.generate(stockHistory, period);
-                this.messages.add(m1);
-                break;*/
-            // case "numBathroom":
-            //     NumBathroomMessage m2 = new NumBathroomMessage();
-            //     m2.generate(house);
-            //     this.messages.add(m2);
-            //     break;
-		}
+    }
 
     public List<Message> getMessages()
     {

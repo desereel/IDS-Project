@@ -22,8 +22,10 @@ public class TrendMessage extends Message
 
 		if (end - begin > 0) {
 			setTrend("upward");
-		} else {
+		} else if (end - begin < 0 ){
 			setTrend("downward");
+		} else {
+			setTrend("neutral");
 		}
 	}
 
