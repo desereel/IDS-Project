@@ -132,18 +132,30 @@ for word, i in word_index.items():
     if embedding_vector is not None:
        embedding_matrix[i] = embedding_vector
 
+embedding_layer = Embedding(len(word_index) + 1, vector_size, weights=[embedding_matrix], input_length=text_maxlen)
+
 # CREATING THE NEURAL MODEL
+# model = Sequential()
+# model.add(Embedding(len(word_index) + 1,
+#                     EMBEDDING_DIM,
+#                     weights=[embedding_matrix],
+#                     input_length=MAX_SEQUENCE_LENGTH,
+#                     trainable=False))
+# model.add(Conv1D(filters=128, kernel_size=5, activation='relu'))
+# model.add(MaxPooling1D(pool_size=5))
+# model.add(Conv1D(filters=128, kernel_size=5, activation='relu'))
+# model.add(GlobalMaxPooling1D())
+# model.add(Dense(num_classes, activation='softmax'))
+
 model = Sequential()
-model.add(Embedding(len(word_index) + 1,
-                    EMBEDDING_DIM,
-                    weights=[embedding_matrix],
-                    input_length=MAX_SEQUENCE_LENGTH,
-                    trainable=False))
-model.add(Conv1D(filters=128, kernel_size=5, activation='relu'))
-model.add(MaxPooling1D(pool_size=5))
-model.add(Conv1D(filters=128, kernel_size=5, activation='relu'))
-model.add(GlobalMaxPooling1D())
+
+model.add(embedding_layer)
+# model.add(Masking())
+model.add(LSTM(vector_size, return_sequences=True))
+model.add(Flatten())
+model.add(Dropout(0.3))
 model.add(Dense(num_classes, activation='softmax'))
+
 
 # Compile the model
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

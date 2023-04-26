@@ -1,0 +1,100 @@
+text:topFive,What are the top 5 cryptocurrencies, in terms of daily movers?
+text:topFive,Name the top 5 cryptocurrencies, in terms of daily movers?
+text:topFive,top 5 cryptocurrencies in daily movers?
+text:topFive,What are the 5 highest cryptos in terms of daily movers?
+text:topFive,List the top five cryptos when considering daily movers
+text:topFive,Which cryptocurrencies are the top 5 daily movers?
+text:topFive,List the 5 most active cryptocurrencies by daily movement.
+text:topFive,What are the top 5 cryptocurrencies with the highest daily percentage changes?
+text:topFive,Name the cryptocurrencies that have had the top 5 daily movements.
+text:topFive,Which cryptocurrencies are currently leading the daily movers list?
+text:dividend,what is the yearly dividend of Apple
+text:dividend,yearly dividend of Apple
+text:dividend,give me the dividend of Apple
+text:dividend,I wish I knew the yearly dividend of Apple
+text:dividend,can you tell me the yearly dividend of AAPL
+text:dividend,What is Apple's annual dividend payment?
+text:dividend,Can you tell me the dividend yield of Apple?
+text:dividend,How much does Apple pay out in dividends annually?
+text:dividend,What is the yearly dividend rate for AAPL?
+text:dividend,I'm interested in Apple's dividend policy, what is the annual payout?
+text:volume,what is the current volume of Google
+text:volume,give me the current volume of Google
+text:volume,I wish I knew the current volume of Google
+text:volume,Display the volume throughout Google's trading day
+text:volume,volume of google
+text:volume,What is the volume of Google's shares right now?
+text:volume,Can you provide me with the current trading volume of Google?
+text:volume,How many shares of Google have been traded today?
+text:volume,What is the current trading volume for GOOGL?
+text:volume,What is the total number of Google shares traded so far today?
+chart:candle,Grab the 6 month candlestick pattern of Apple
+chart:candle,what does the 6 month candlestick pattern of Apple look like
+chart:candle,I wish I could see the candlestick patten of Apple
+chart:candle,apple 6 month candlestick
+chart:candle,I need the 6 month candlestick pattern of Apple
+chart:candle,Can you show me the candlestick chart for Apple's past 6 months?
+chart:candle,What does the 6-month candlestick chart for AAPL look like?
+chart:candle,Could you provide me with a candlestick chart of Apple's past 6 months?
+chart:candle,Show me the 6-month candlestick chart for Apple's stock.
+chart:candle,I'd like to see the candlestick chart for Apple's stock over the last 6 months.
+text:trend,Is Apple experiencing a downward trend this weeK?
+text:trend,Apple downward trend?
+text:trend,is Apple showing a downward trend currently?
+text:trend,what type of trend is Apple showing?
+text:trend,I wish I knew if Apple was experiencing a downward trend.
+text:trend,Is there a current trend of declining stock prices for Apple?
+text:trend,Can you tell me if Apple is currently experiencing a downward trend?
+text:trend,What type of trend is Apple's stock currently showing?
+text:trend,Has Apple's stock been trending downwards lately?
+text:trend,How has Apple's stock price trended this week?
+text:currPrice,What is the current share price of Amazon?
+text:currPrice,Can you give me the valuation of Amazon per share?
+text:currPrice,What is the price of Amazon's stock right now?
+text:currPrice,How much is Amazon's stock worth at the moment?
+text:currPrice,What is the current market value of Amazon's shares?
+text:currPrice,What is Amazon's current share price?
+text:currPrice,Can you tell me the value of Amazon's stock per share right now?
+text:currPrice,How much does Amazon's stock currently cost per share?
+text:currPrice,What is the current market price of Amazon's shares?
+text:currPrice,What is the current value of a share of Amazon's stock?
+text:priceChange,How much has Amazon's stock price changed over the past week?
+text:priceChange,Can you provide me with the percentage change in Amazon's stock price for the previous week?
+text:priceChange,What was the percentage change in Amazon's stock price for the week that just ended?
+text:priceChange,Has Amazon's stock price increased or decreased in the past week? By how much?
+text:priceChange,What was the weekly price change percentage for Amazon's shares?
+text:priceChange,What was the change in Amazon's stock price over the past week?
+text:priceChange,Can you provide me with the weekly percentage change in Amazon's stock price?
+text:priceChange,Did Amazon's stock price increase or decrease over the past week? By how much?
+text:priceChange,What was the percentage change in Amazon's stock price for the previous week?
+text:priceChange,How much has Amazon's stock price changed in the last week?
+text:events,When is Amazon's earnings call scheduled for?
+text:events,Can you tell me the date of Amazon's upcoming earnings call?
+text:events,What event is taking place for Amazon on Friday the 3rd?
+text:events,What important event is happening for Amazon on Friday the 3rd?
+text:events,What is the event that Amazon will hold on Friday the 3rd?
+text:events,When is Amazon's next earnings call scheduled?
+text:events,Can you provide me with the date of Amazon's upcoming earnings call?
+text:events,What is the event that Amazon is hosting on Friday the 3rd?
+text:events,What is the important event happening for Amazon on Friday the 3rd?
+text:events,Can you tell me what is the main event Amazon will hold on Friday the 3rd?
+text:news,What are some recent articles written about Amazon?
+text:news,Can you provide me with the links to the latest news articles about Amazon?
+text:news,What are the three most recent news articles about Amazon?
+text:news,Which news sites have published recent articles about Amazon?
+text:news,What is the latest news about Amazon and where can I find it?
+text:news,What are some recent news articles about Amazon?
+text:news,Can you provide me with the latest news links about Amazon?
+text:news,What are the three most recent articles written about Amazon?
+text:news,Which news outlets have published the latest articles about Amazon?
+text:news,Where can I find the latest news about Amazon?
+text:history,What was the share price of Amazon last Friday?
+text:history,Can you give me the closing price of Amazon's stock from Friday the 3rd?
+text:history,What was the value of Amazon's shares on Friday the 3rd?
+text:history,What was the price per share of Amazon last Friday?
+text:history,How much did Amazon's stock cost per share on Friday the 3rd?
+text:history,What was the closing share price of Amazon last Friday?
+text:history,Can you provide me with the share value of Amazon on Friday the 3rd?
+text:history,How much did Amazon's stock cost per share on Friday the 3rd?
+text:history,What was the price of Amazon's shares last Friday?
+text:history,What was the value of Amazon's stock at the end of the week?

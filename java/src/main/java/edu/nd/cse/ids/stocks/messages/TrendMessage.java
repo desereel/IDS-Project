@@ -15,22 +15,31 @@ public class TrendMessage extends Message
 	public TrendMessage() {}
 
 	public void generate(List<StockEntry> stockHistory, int period) {
-		// setPeriod(period);
-		System.out.println("TEST");
-		// setTrend();
+		setPeriod(period);
+
+		double end = stockHistory.get(stockHistory.size() - 1).getAdjusted();
+		double begin = stockHistory.get(stockHistory.size() - 1 - period).getAdjusted();
+
+		if (end - begin > 0) {
+			setTrend("upward");
+		} else if (end - begin < 0 ){
+			setTrend("downward");
+		} else {
+			setTrend("neutral");
+		}
 	}
 
-	// public void setPeriod() {
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+	public void setTrend(String trend) {
+		this.trend = trend;
+	}
 
-	// }
-	// public void setTrend() {
-
-	// }
-
-	// public void getPeriod() {
-
-	// }
-	// public void getTrend() {
-
-	// }
+	public int getPeriod() {
+		return this.period;
+	}
+	public String getTrend() {
+		return this.trend; 
+	}
 }

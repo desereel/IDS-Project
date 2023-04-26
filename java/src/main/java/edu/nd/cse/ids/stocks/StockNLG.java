@@ -45,7 +45,9 @@ public class StockNLG
 	public List<String> askQuestion(String question) {
 		List<StockEntry> stockHistory = this.reader.getStockHistory();
 
-		question = "Why am I using a test question?";
+		this.docplanner.clearMessages();
+
+		// question = "Why am I using a test question?";
 		this.docplanner.answerQuestion(stockHistory, question);
 
         List<Message> documentPlan = this.docplanner.getMessages();
@@ -57,51 +59,30 @@ public class StockNLG
 	}
 
 
+
 	public static void main(String[] args)
 	{
 
 		Scanner scanner = new Scanner(System.in);		
 
+		// String question = "What is the 5 day trend of Bitcoin's share price";
 		String question = "";
-		int qindex = -1;
-		for (int i = 0; i < args.length; i++) {
-			
-			if (args[i].equals("-q")) {
-				qindex = i;
+		String ticker = "";
+		System.out.println("What is the ticker for the stock you would like to look at today?");
+		ticker = scanner.nextLine().trim().toUpperCase();
+		// System.out.println(ticker);
+		StockNLG stockNLG = new StockNLG("../data/stock_market_data/all/" + ticker + ".csv");
+		System.out.println("What would you like to learn about that stock?");
+		while (true) {
+			question = scanner.nextLine().trim();
+			if(question.contains("quit")){
+				return;
+			}
+			List<String> answer = stockNLG.askQuestion(question); 
+			for(String sentence: answer)
+			{
+				System.out.println(sentence);
 			}
 		}
-
-		if ( qindex != -1 ){
-			for ( int i = qindex + 1; i < args.length; i++){
-				question = question + args[i] + " ";
-			}
-		} else {
-			question = String.join(" ", args);
-		}
-		
-		question = question.trim();
-		System.out.println("You asked: " + question);
-		// System.out.println("Enter the stock exchange related to your question: ");
-		// String stockExchange = scanner.nextLine();
-
-		// System.out.println("Retrieving " + stockExchange + " information...");
-
-		// if ( stockExchange.equalsIgnoreCase("nyse")){
-
-		// 	String fileIn = "../python/data/stock_market_data/nyse/";
-
-		// }
-
-		// decide which stock 
-		// TODO
-
-		// create StockNLG
-		StockNLG stockNLG = new StockNLG("../data/stock_market_data/sp500/csv/AAPL.csv");
-		List<String> answer = stockNLG.askQuestion(question); 
-
-        for(String sentence: answer)
-        {
-            System.out.println(sentence);
-        }
 	}
 }
