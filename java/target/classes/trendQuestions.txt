@@ -1,0 +1,20 @@
+trend:day,Show daily movement
+trend:day,How did it trend today?
+trend:day,Day trend
+trend:day,What was the trend today?
+trend:day,How did the stock trend today?
+trend:week,Show me for a week
+trend:week,How about a week?
+trend:week,What is the weekly trend?
+trend:week,weekly trend
+trend:week,week
+trend:month,Show me for a month
+trend:month,What was the trend this month?
+trend:month,Did it trend up this month?
+trend:month,Did AAPL do well this month?
+trend:month,monthly trend
+trend:year,yearly trend
+trend:year,how about over the year?
+trend:year,Show me AAPL trend for the year
+trend:year,What was its yearly trend?
+trend:year,how about this year?

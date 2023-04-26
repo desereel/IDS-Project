@@ -47,11 +47,15 @@ public class DocumentPlanner
 
     private String ticker;
 
+    private String questionsFile;
+
     private Map<String, List<String>> categories;
 	
 	public DocumentPlanner()
 	{
         messages = new LinkedList<Message>();
+        questionsFile = "questions.txt";
+
 	}
 
 
@@ -107,7 +111,7 @@ public class DocumentPlanner
 
         // System.out.println(question);
 
-        String questionsFile = "questions.txt";
+        // String questionsFile = "questions.txt";
 
         Map<String, List<String>> categories = new HashMap<>();
 /*        ClassLoader classLoader = getClass().getClassLoader();
@@ -135,6 +139,24 @@ public class DocumentPlanner
             int period = 5; // must pull from prompts
             m1.generate(stockHistory, period);
             this.messages.add(m1);
+            // prep for next question
+            this.questionsFile = "trendQuestions.txt";
+        }
+        if(category.contains("trend:week")){
+            TrendMessage m1 = new TrendMessage();
+            int period = 5; // average number of trading days in a week
+            m1.generate(stockHistory, period);
+            this.messages.add(m1);
+            // prep for next question
+            this.questionsFile = "trendQuestions.txt";
+        }
+        if(category.contains("trend:month")){
+            TrendMessage m1 = new TrendMessage();
+            int period = 21; // average number of trading days in a month
+            m1.generate(stockHistory, period);
+            this.messages.add(m1);
+            // prep for next question
+            this.questionsFile = "trendQuestions.txt";
         }
 
 
