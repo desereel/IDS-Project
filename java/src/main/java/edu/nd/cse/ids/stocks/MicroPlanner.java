@@ -4,6 +4,8 @@ import edu.nd.cse.ids.stocks.messages.*;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import simplenlg.framework.*;
 import simplenlg.lexicon.*;
@@ -32,7 +34,10 @@ public class MicroPlanner
                 SPhraseSpec s1 = handleMessage((TrendMessage) message);
                 phrases.add(s1);
 			}
-
+			if (message instanceof VolumeMessage) {
+				SPhraseSpec s1 = handleMessage((VolumeMessage) message);
+				phrases.add(s1);
+			}
 		}
 		return phrases;
 	}
@@ -53,4 +58,18 @@ public class MicroPlanner
 
 		return s1;
 	}
+
+	public SPhraseSpec handleMessage(VolumeMessage message)
+    {
+
+        SPhraseSpec s1 = nlgFactory.createClause();
+		NumberFormat nf = new DecimalFormat("##.###");
+
+		s1.setSubject("The volume");
+		s1.setVerb("is");
+		s1.setObject(nf.format(message.getVolume()));
+
+        return s1;
+    }
+
 }

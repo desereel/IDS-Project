@@ -36,10 +36,8 @@ public class DocumentPlanner
 {
 
 	private List<Message> messages;
-/*	private MultiLayerNetwork model;
-	private KerasTokenizer tokenizer;
-*/
-    // private static final String API_KEY = "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";
+    
+	// private static final String API_KEY = "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";
     private static final String API_KEY = "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";
     private static final String MODEL_NAME = "text-davinci-003";
     private static final double TEMPERATURE = 0;
@@ -89,7 +87,6 @@ public class DocumentPlanner
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Authorization", "Bearer " + API_KEY);
-       // con.setRequestProperty("Connection", "close"); // Add this line to close the connection after each use
 
         JSONObject data = new JSONObject();
         data.put("model", MODEL_NAME);
@@ -103,20 +100,15 @@ public class DocumentPlanner
 
         String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
                 .reduce((a, b) -> a + b).get();
-		// System.out.println(output);
-        return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
+        
+		return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
     }
 
 	public void answerQuestion(List<StockEntry> stockHistory, String question) {
 
-        // System.out.println(question);
-
-        // String questionsFile = "questions.txt";
 
         Map<String, List<String>> categories = new HashMap<>();
-/*        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(questionsFile);
-*/
+		
 		String fileContents = "";
 		try (Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/" + questionsFile))) {
     		fileContents = scanner.useDelimiter("\\A").next();
@@ -124,16 +116,22 @@ public class DocumentPlanner
     		e.printStackTrace();
 		}
 
-        String category = "";
+        String output = "";
 
 		try {
-			System.out.println(question);
-            category = classify(question, fileContents);
-            System.out.println(category);
+            output = classify(question, fileContents);
         } catch (Exception e){
             e.printStackTrace();
         }
 
+		String category = output.substring(output.indexOf("text"));
+
+		if(category.contains("text:history")){
+			VolumeMessage m1 = new VolumeMessage();
+			String date = "12-12-1980";
+			m1.generate(stockHistory, date);
+			this.messages.add(m1);
+		}
         if(category.contains("text:trend")) {
             TrendMessage m1 = new TrendMessage();
             int period = 5; // must pull from prompts
