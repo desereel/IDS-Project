@@ -9,16 +9,17 @@ import java.util.Arrays;
 
 public class TrendMessage extends Message
 {
-	private int period;
+	private String period;
 	private String trend;
 	
 	public TrendMessage() {}
 
 	public void generate(List<StockEntry> stockHistory, int period) {
-		setPeriod(period);
+		// setPeriod(period);
 
 		double end = stockHistory.get(stockHistory.size() - 1).getAdjusted();
 		double begin = stockHistory.get(stockHistory.size() - 1 - period).getAdjusted();
+		
 
 		if (end - begin > 0) {
 			setTrend("upward");
@@ -27,16 +28,25 @@ public class TrendMessage extends Message
 		} else {
 			setTrend("neutral");
 		}
+		if(period == 5){
+			setPeriod("week");
+		} else if (period == 21) {
+			setPeriod("month");
+		} else if (period == 1) {
+			setPeriod("day");
+		} else {
+			setPeriod("year");
+		}
 	}
 
-	public void setPeriod(int period) {
+	public void setPeriod(String period) {
 		this.period = period;
 	}
 	public void setTrend(String trend) {
 		this.trend = trend;
 	}
 
-	public int getPeriod() {
+	public String getPeriod() {
 		return this.period;
 	}
 	public String getTrend() {

@@ -1,9 +1,12 @@
+edu/nd/cse/ids/stocks/messages/TrendPromptMessage.class
 edu/nd/cse/ids/stocks/Preprocess.class
 edu/nd/cse/ids/stocks/DocumentPlanner.class
+edu/nd/cse/ids/stocks/messages/Message.class
+edu/nd/cse/ids/stocks/MicroPlanner.class
+edu/nd/cse/ids/stocks/messages/PromptMessage.class
+edu/nd/cse/ids/stocks/StockNLG.class
 edu/nd/cse/ids/stocks/StockReader.class
 edu/nd/cse/ids/stocks/Realizer.class
 edu/nd/cse/ids/stocks/StockEntry.class
-edu/nd/cse/ids/stocks/messages/Message.class
 edu/nd/cse/ids/stocks/messages/TrendMessage.class
-edu/nd/cse/ids/stocks/MicroPlanner.class
-edu/nd/cse/ids/stocks/StockNLG.class
+edu/nd/cse/ids/stocks/messages/VolumeMessage.class

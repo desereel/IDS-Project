@@ -32,133 +32,227 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
+
+
 public class DocumentPlanner
 {
-
-	private List<Message> messages;
-    
-	// private static final String API_KEY = "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";
-    private static final String API_KEY = "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";
-    private static final String MODEL_NAME = "text-davinci-003";
-    private static final double TEMPERATURE = 0;
-    private static final int MAX_TOKENS = 64;
-
+    final String[] basicMessages = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
+    final String[] modifyMessages = {"modify:week", "modify:month", "modify:year", "modify:day", "modify:done"};
+    private List<Message> messages;
+    private MultiLayerNetwork model;
+    private KerasTokenizer tokenizer;
+    private String [] messageList = basicMessages;
     private String ticker;
-
-    private String questionsFile;
-
-    private Map<String, List<String>> categories;
+    private Message lastMessage;
+    private String stock; 
 	
-	public DocumentPlanner()
+	public DocumentPlanner(String stock)
 	{
+        try {
+            // use the java dl4j library to pull in the model & tokenizer
+            String simpleMlp = "../data/models/basicModel.h5";
+            model = KerasModelImport.importKerasSequentialModelAndWeights(simpleMlp);
+            tokenizer = KerasTokenizer.fromJson("../data/models/basicTok.json");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         messages = new LinkedList<Message>();
-        questionsFile = "questions.txt";
-
+        this.stock = stock;
 	}
 
+    public void switchModel(String modelName, String tokName, String[] messageList){
+        try {
+            // use the java dl4j library to pull in the model & tokenizer
+            this.model = KerasModelImport.importKerasSequentialModelAndWeights("../data/models/" + modelName);
+            this.tokenizer = KerasTokenizer.fromJson("../data/models/" + tokName);
+            this.messageList = messageList;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void clearMessages(){
         messages = new LinkedList<Message>();
     }
 
-    public String classify(String text, String fileContents) throws Exception {
-		
-		String indication = "I am providing a list of questions and the categories they are in, separated by a colon. Please store this for future use as I will be providing a question for you to classify within these categories. Here is the list: ";
-
-        String classifier = "Now classify this question based on the previous information I provided you: ";
-
-		try{		
-			String response = generateResponse(indication + fileContents + classifier + text);
-			return response;
-		} catch ( Exception e){
-			e.printStackTrace();
-		
-		}
-
-		return null;
-
-    }
-	
-    private String generateResponse(String prompt) throws Exception {
-
-        String url = "https://api.openai.com/v1/completions";
-        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + API_KEY);
-
-        JSONObject data = new JSONObject();
-        data.put("model", MODEL_NAME);
-        data.put("prompt", prompt);
-        data.put("max_tokens", MAX_TOKENS);
-        data.put("temperature", TEMPERATURE);
-
-        con.setDoOutput(true);
-        con.getOutputStream().write(data.toString().getBytes());
-
-
-        String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
-                .reduce((a, b) -> a + b).get();
+   public static int[] padcrop(Integer[][] seqp, int seqlen)
+    {
+        Integer[] seq = seqp[0];
+    
+        int[] newseq = new int[seqlen];
+        int i = 0;
         
-		return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
+        int diff = seq.length - seqlen;
+        int itmax = seqlen + diff;
+        
+        if(diff < 0)
+        {
+            diff = 0;
+            itmax = seq.length;
+        }
+        
+        for (int j=diff; j<itmax; j++)
+        {
+            if(seq.length < 1)
+                newseq[i] = 1;
+            else
+                newseq[i] = seq[j];
+            
+            i++;
+        }
+        
+        return(newseq);
+    }
+
+    public void promptQuestion(){
+        PromptMessage m0 = new PromptMessage();
+        m0.generate(this.stock);
+        this.messages.add(m0);
+        return;
     }
 
 	public void answerQuestion(List<StockEntry> stockHistory, String question) {
+        // use the tokenizer to create a vectorized representation of the question
+        Preprocess preproc = new Preprocess();
+        String rformatted = preproc.preprocess(question);
+        int seqlen = 200;
 
+        String[] qs = new String[1];
+        qs[0] = rformatted;
 
-        Map<String, List<String>> categories = new HashMap<>();
-		
-		String fileContents = "";
-		try (Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/" + questionsFile))) {
-    		fileContents = scanner.useDelimiter("\\A").next();
-		} catch (Exception e) {
-    		e.printStackTrace();
-		}
+        Integer[][] seq = this.tokenizer.textsToSequences(qs);
+        int newseq[] = padcrop(seq, seqlen);
 
-        String output = "";
+        // use the model to produce a prediction about what class the question belongs to
+        INDArray input = Nd4j.create(1, seqlen);
 
-		try {
-            output = classify(question, fileContents);
-        } catch (Exception e){
-            e.printStackTrace();
+        for(int i = 0; i < seqlen; i++) {
+            input.putScalar(new int[] {i}, newseq[i]);
         }
 
-		String category = output.substring(output.indexOf("text"));
+        // System.out.println(input);
+        INDArray output = model.output(input);
 
-		if(category.contains("text:history")){
-			VolumeMessage m1 = new VolumeMessage();
-			String date = "12-12-1980";
-			m1.generate(stockHistory, date);
-			this.messages.add(m1);
-		}
-        if(category.contains("text:trend")) {
-            TrendMessage m1 = new TrendMessage();
-            int period = 5; // must pull from prompts
-            m1.generate(stockHistory, period);
-            this.messages.add(m1);
-            // prep for next question
-            this.questionsFile = "trendQuestions.txt";
-        }
-        if(category.contains("trend:week")){
-            TrendMessage m1 = new TrendMessage();
-            int period = 5; // average number of trading days in a week
-            m1.generate(stockHistory, period);
-            this.messages.add(m1);
-            // prep for next question
-            this.questionsFile = "trendQuestions.txt";
-        }
-        if(category.contains("trend:month")){
-            TrendMessage m1 = new TrendMessage();
-            int period = 21; // average number of trading days in a month
-            m1.generate(stockHistory, period);
-            this.messages.add(m1);
-            // prep for next question
-            this.questionsFile = "trendQuestions.txt";
-        }
+        int messageNum = output.argMax(1).getInt();
 
+        // create message list that includes the message types necessary to answer the question
+        // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
 
+        // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
+
+        System.out.println(messageList[messageNum]);
+
+        switch(messageList[messageNum]) {
+            case "text:trend":
+                TrendMessage m1 = new TrendMessage();
+                m1.generate(stockHistory, 5);
+                this.messages.add(m1);
+                switchModel("modifyModel.h5", "modifyTok.json",modifyMessages);
+                TrendPromptMessage m2 = new TrendPromptMessage();
+                m2.generate();
+                this.messages.add(m2);
+                this.lastMessage = m1;
+                break;
+            case "modify:week":
+                if(this.lastMessage instanceof TrendMessage) {
+                    ((TrendMessage) this.lastMessage).generate(stockHistory,5);
+                    this.messages.add((TrendMessage) this.lastMessage);
+                    TrendPromptMessage m3 = new TrendPromptMessage();
+                    m3.generate();
+                    this.messages.add(m3);
+                }
+                break;
+            case "modify:month":
+                if(this.lastMessage instanceof TrendMessage) {
+                    ((TrendMessage) this.lastMessage).generate(stockHistory,21);
+                    this.messages.add((TrendMessage) this.lastMessage);
+                    TrendPromptMessage m3 = new TrendPromptMessage();
+                    m3.generate();
+                    this.messages.add(m3);
+                }
+                break;
+            case "modify:day":
+                if(this.lastMessage instanceof TrendMessage) {
+                    ((TrendMessage) this.lastMessage).generate(stockHistory,1);
+                    this.messages.add((TrendMessage) this.lastMessage);
+                    TrendPromptMessage m4 = new TrendPromptMessage();
+                    m4.generate();
+                    this.messages.add(m4);
+                }
+                break;
+            case "modify:year":
+                if(this.lastMessage instanceof TrendMessage) {
+                    ((TrendMessage) this.lastMessage).generate(stockHistory,252);
+                    this.messages.add((TrendMessage) this.lastMessage);
+                    TrendPromptMessage m5 = new TrendPromptMessage();
+                    m5.generate();
+                    this.messages.add(m5);
+                }
+                break;
+            case "modify:done":
+                switchModel("modifyModel.h5", "modifyTok.json",basicMessages);
+                promptQuestion();
+        }
+        return;
     }
+
+
+	// public void answerQuestion(List<StockEntry> stockHistory, String question) {
+
+    //     classifyResponse(question);
+    //     // Map<String, List<String>> categories = new HashMap<>();
+		
+	// 	// String fileContents = "";
+	// 	// try (Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/" + questionsFile))) {
+    // 	// 	fileContents = scanner.useDelimiter("\\A").next();
+	// 	// } catch (Exception e) {
+    // 	// 	e.printStackTrace();
+	// 	// }
+
+    //     // String output = "";
+
+	// 	// try {
+    //     //     output = classify(question, fileContents);
+    //     // } catch (Exception e){
+    //     //     e.printStackTrace();
+    //     // }
+
+	// 	// // String category = output.substring(output.indexOf("text"));
+	// 	// String category = output;
+
+	// 	// if(category.contains("text:history")){
+	// 	// 	VolumeMessage m1 = new VolumeMessage();
+	// 	// 	String date = "12-12-1980";
+	// 	// 	m1.generate(stockHistory, date);
+	// 	// 	this.messages.add(m1);
+	// 	// }
+    //     // if(category.contains("text:trend")) {
+    //     //     TrendMessage m1 = new TrendMessage();
+    //     //     int period = 5; // must pull from prompts
+    //     //     m1.generate(stockHistory, period);
+    //     //     this.messages.add(m1);
+    //     //     // prep for next question
+    //     //     this.questionsFile = "trendQuestions.txt";
+    //     // }
+    //     // if(category.contains("trend:week")){
+    //     //     TrendMessage m1 = new TrendMessage();
+    //     //     int period = 5; // average number of trading days in a week
+    //     //     m1.generate(stockHistory, period);
+    //     //     this.messages.add(m1);
+    //     //     // prep for next question
+    //     //     this.questionsFile = "trendQuestions.txt";
+    //     // }
+    //     // if(category.contains("trend:month")){
+    //     //     TrendMessage m1 = new TrendMessage();
+    //     //     int period = 21; // average number of trading days in a month
+    //     //     m1.generate(stockHistory, period);
+    //     //     this.messages.add(m1);
+    //     //     // prep for next question
+    //     //     this.questionsFile = "trendQuestions.txt";
+    //     // }
+
+
+    // }
 
     public List<Message> getMessages()
     {

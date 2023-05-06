@@ -1,0 +1,25 @@
+modify:week,What about a week?
+modify:week,How about this week?
+modify:week,Show me the weekly data.
+modify:week,I want the weekly data.
+modify:week,Can you show the weekly data?
+modify:month,What about a month?
+modify:month,How about this month?
+modify:month,Show me the monthly data.
+modify:month,I want the monthly data.
+modify:month,Can you show the monthly data?
+modify:year,What about a year?
+modify:year,How about this year?
+modify:year,Show me the yearly data.
+modify:year,I want the yearly data.
+modify:year,Can you show the yearly data?
+modify:day,What about a day?
+modify:day,How about today?
+modify:day,Show me the daily data.
+modify:day,I want the daily data.
+modify:day,Can you show the daily data?
+modify:done,No thank you.
+modify:done,Actually I am done.
+modify:done,I do not think so.
+modify:done,There is not.
+modify:done,I would like to ask a different question

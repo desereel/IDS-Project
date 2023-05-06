@@ -38,6 +38,14 @@ public class MicroPlanner
 				SPhraseSpec s1 = handleMessage((VolumeMessage) message);
 				phrases.add(s1);
 			}
+			if ( message instanceof TrendPromptMessage) {
+				SPhraseSpec s1 = handleMessage((TrendPromptMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof PromptMessage) {
+				SPhraseSpec s1 = handleMessage ((PromptMessage) message);
+				phrases.add(s1);
+			}
 		}
 		return phrases;
 	}
@@ -46,6 +54,7 @@ public class MicroPlanner
 	{
         SPhraseSpec s1 = nlgFactory.createClause();
 		String trend = message.getTrend();
+		String period = message.getPeriod();
 
         WordElement we_stock = new WordElement("stock", LexicalCategory.NOUN);
         NPPhraseSpec np_stock = nlgFactory.createNounPhrase(we_stock);
@@ -55,7 +64,41 @@ public class MicroPlanner
 		s1.setVerb("is");
 		s1.addComplement("trending");
 		s1.addComplement(trend);
+		s1.addComplement("this");
+		s1.addComplement(period);
 
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(TrendPromptMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.setSubject("you");
+		s1.addComplement("want");
+		s1.addComplement("to");
+		s1.addComplement("learn");
+		s1.addComplement("more");
+		s1.addComplement("about");
+		s1.addComplement("the");
+		s1.addComplement("tend");
+		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		return s1;
+	}
+
+		public SPhraseSpec handleMessage(PromptMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.setSubject("you");
+		s1.addComplement("want");
+		s1.addComplement("to");
+		s1.addComplement("learn");
+		s1.addComplement("about");
+		s1.addComplement(message.getStock());
+		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT);
 		return s1;
 	}
 

@@ -26,14 +26,14 @@ public class StockNLG
 	private MicroPlanner microplanner;
 	private Realizer realizer;
 
-	public StockNLG(String datfile)
+	public StockNLG(String stock)
 	{
 		// Note: This will be changed, final version will not take in a datfile as we do not yet know which stock to look at (thus which file)
 
 		this.reader = new StockReader();
-		this.reader.readStockEntry(datfile);
+		this.reader.readStockEntry("../data/stock_market_data/all/" + stock + ".csv");
 
-		this.docplanner = new DocumentPlanner();
+		this.docplanner = new DocumentPlanner(stock);
 
 		this.microplanner = new MicroPlanner();
 		
@@ -58,6 +58,14 @@ public class StockNLG
 
 	}
 
+	public List<String> promptQuestion() {
+		this.docplanner.clearMessages();
+		this.docplanner.promptQuestion();
+		List<Message> documentPlan = this.docplanner.getMessages();
+		List<SPhraseSpec> sentences = this.microplanner.lexicalize(documentPlan);
+        return(this.realizer.realize(sentences));
+
+	}
 
 
 	public static void main(String[] args)
@@ -71,14 +79,26 @@ public class StockNLG
 		System.out.println("What is the ticker for the stock you would like to look at today?");
 		ticker = scanner.nextLine().trim().toUpperCase();
 		// System.out.println(ticker);
-		StockNLG stockNLG = new StockNLG("../data/stock_market_data/all/" + ticker + ".csv");
-		System.out.println("What would you like to learn about that stock?");
+		StockNLG stockNLG = new StockNLG(ticker);
+
+
+
+		List<String> answer = stockNLG.promptQuestion();
+		for(String sentence: answer)
+		{
+			System.out.println(sentence);
+		}
+		// System.out.println("What would you like to learn about that stock?");
+
+
+
+
 		while (true) {
 			question = scanner.nextLine().trim();
 			if(question.contains("quit")){
 				return;
 			}
-			List<String> answer = stockNLG.askQuestion(question); 
+			answer = stockNLG.askQuestion(question); 
 			for(String sentence: answer)
 			{
 				System.out.println(sentence);
