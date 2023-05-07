@@ -46,6 +46,15 @@ public class MicroPlanner
 				SPhraseSpec s1 = handleMessage ((PromptMessage) message);
 				phrases.add(s1);
 			}
+			if (message instanceof PriceChangeMessage) {
+				SPhraseSpec s1 = handleMessage ((PriceChangeMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof PriceChangePromptMessage) {
+				SPhraseSpec s1 = handleMessage ((PriceChangePromptMessage) message);
+				phrases.add(s1);
+
+			}
 		}
 		return phrases;
 	}
@@ -87,7 +96,48 @@ public class MicroPlanner
 		return s1;
 	}
 
-		public SPhraseSpec handleMessage(PromptMessage message)
+	public SPhraseSpec handleMessage(PriceChangeMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+		String trend = message.getTrend();
+		double change = message.getChange();
+		String period = message.getPeriod();
+
+        WordElement we_stock = new WordElement("stock", LexicalCategory.NOUN);
+        NPPhraseSpec np_stock = nlgFactory.createNounPhrase(we_stock);
+        np_stock.setDeterminer("that");
+		NumberFormat nf = new DecimalFormat("##.##%");
+
+		s1.setSubject(np_stock);
+		s1.setVerb("moved");
+		s1.addComplement(trend);
+		s1.addComplement(nf.format(change));
+		s1.addComplement("this");
+		s1.addComplement(period);
+		s1.setFeature(Feature.TENSE, Tense.PAST);
+
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(PriceChangePromptMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.setSubject("you");
+		s1.addComplement("want");
+		s1.addComplement("to");
+		s1.addComplement("learn");
+		s1.addComplement("more");
+		s1.addComplement("about");
+		s1.addComplement("the");
+		s1.addComplement("price");
+		s1.addComplement("change");
+		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(PromptMessage message)
 	{
         SPhraseSpec s1 = nlgFactory.createClause();
 

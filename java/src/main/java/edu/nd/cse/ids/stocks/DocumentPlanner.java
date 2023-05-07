@@ -140,7 +140,8 @@ public class DocumentPlanner
 
         // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
-        System.out.println(messageList[messageNum]);
+        // System.out.println(question);
+        // System.out.println(messageList[messageNum]);
 
         switch(messageList[messageNum]) {
             case "text:trend":
@@ -161,6 +162,13 @@ public class DocumentPlanner
                     m3.generate();
                     this.messages.add(m3);
                 }
+                if(this.lastMessage instanceof PriceChangeMessage) {
+                    ((PriceChangeMessage) this.lastMessage).generate(stockHistory, 5);
+                    this.messages.add((PriceChangeMessage) this.lastMessage);
+                    PriceChangePromptMessage m11 = new PriceChangePromptMessage();
+                    m11.generate();
+                    this.messages.add(m11);
+                }
                 break;
             case "modify:month":
                 if(this.lastMessage instanceof TrendMessage) {
@@ -169,6 +177,13 @@ public class DocumentPlanner
                     TrendPromptMessage m3 = new TrendPromptMessage();
                     m3.generate();
                     this.messages.add(m3);
+                }
+                if(this.lastMessage instanceof PriceChangeMessage) {
+                    ((PriceChangeMessage) this.lastMessage).generate(stockHistory, 21);
+                    this.messages.add((PriceChangeMessage) this.lastMessage);
+                    PriceChangePromptMessage m10 = new PriceChangePromptMessage();
+                    m10.generate();
+                    this.messages.add(m10);
                 }
                 break;
             case "modify:day":
@@ -179,6 +194,13 @@ public class DocumentPlanner
                     m4.generate();
                     this.messages.add(m4);
                 }
+                if(this.lastMessage instanceof PriceChangeMessage) {
+                    ((PriceChangeMessage) this.lastMessage).generate(stockHistory, 1);
+                    this.messages.add((PriceChangeMessage) this.lastMessage);
+                    PriceChangePromptMessage m9 = new PriceChangePromptMessage();
+                    m9.generate();
+                    this.messages.add(m9);
+                }
                 break;
             case "modify:year":
                 if(this.lastMessage instanceof TrendMessage) {
@@ -188,10 +210,28 @@ public class DocumentPlanner
                     m5.generate();
                     this.messages.add(m5);
                 }
+                if(this.lastMessage instanceof PriceChangeMessage) {
+                    ((PriceChangeMessage) this.lastMessage).generate(stockHistory, 252);
+                    this.messages.add((PriceChangeMessage) this.lastMessage);
+                    PriceChangePromptMessage m8 = new PriceChangePromptMessage();
+                    m8.generate();
+                    this.messages.add(m8);
+                }
                 break;
             case "modify:done":
-                switchModel("modifyModel.h5", "modifyTok.json",basicMessages);
+                switchModel("basicModel.h5", "basicTok.json",basicMessages);
                 promptQuestion();
+                break;
+            case "text:priceChange":
+                PriceChangeMessage m6 = new PriceChangeMessage();
+                m6.generate(stockHistory, 5);
+                this.messages.add(m6);
+                this.lastMessage = m6;
+                switchModel("modifyModel.h5", "modifyTok.json",modifyMessages);
+                PriceChangePromptMessage m7 = new PriceChangePromptMessage();
+                m7.generate();
+                this.messages.add(m7);
+                break;
         }
         return;
     }
