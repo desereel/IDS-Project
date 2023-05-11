@@ -23,6 +23,18 @@ GLOVE_DIR = "input/"
 EMBEDDING_DIM = 100
 MAX_SEQUENCE_LENGTH = 200
 
+# TOK_NAME = "../data/models/basicTok.json"
+# MODEL_NAME = "../data/models/basicModel.h5"
+# INPUT_NAME = "../data/questions.txt"
+# NUM_OPTIONS = 10
+# EPOCHS = 4
+
+TOK_NAME = "../data/models/modifyTok.json"
+MODEL_NAME = "../data/models/modifyModel.h5"
+INPUT_NAME = "../data/modifyQuestions.txt"
+NUM_OPTIONS = 5
+EPOCHS = 8
+
 random.seed(1337)
 np.random.seed(1337)
 tf.random.set_seed(1337)
@@ -30,7 +42,7 @@ tf.random.set_seed(1337)
 categories = []
 vectorizer = TextVectorization(max_tokens=30000, output_sequence_length=200)
 
-with open('data/questions.txt') as f:
+with open(INPUT_NAME) as f:
 
     firstColumn = [ line.split(',')[0] for line in f]
     secondColumn = [ line.split(',')[1] for line in f]
@@ -50,7 +62,7 @@ cat = list()
 
 for i, category in enumerate(categories):
 
-    with open('data/questions.txt') as f:
+    with open(INPUT_NAME) as f:
 
         for line in f:
 
@@ -85,7 +97,7 @@ testcat = cat[trainlen+vallen:]
 
 # TOKENIZER
 
-tokenizer = Tokenizer(filters='', lower=False, num_words=vocab_size, oov_token="UNK")
+tokenizer = Tokenizer(lower=False, num_words=vocab_size, oov_token="UNK")
 tokenizer.fit_on_texts(traindat)
 word_index = tokenizer.word_index
 
@@ -102,11 +114,11 @@ Xtest = tokenizer.texts_to_sequences(testdat)
 # SAVING TOKENIZER
 tokenizer_dict = json.loads(tokenizer.to_json())
 
-with open('tokenizer.json', 'w', encoding='utf-8') as f:
+with open(TOK_NAME, 'w', encoding='utf-8') as f:
     f.write(json.dumps(tokenizer_dict, ensure_ascii=False))
 
 text_maxlen = 200
-num_classes = 10
+num_classes = NUM_OPTIONS
 vector_size = 100
 batch_size = 1
 
@@ -161,7 +173,7 @@ model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model
-model.fit(Xtrain, Ytrain, validation_data=(Xval, Yval), epochs=4, batch_size=batch_size)
+model.fit(Xtrain, Ytrain, validation_data=(Xval, Yval), epochs=EPOCHS, batch_size=batch_size)
 
 # Save the model
-model.save('qa_g_lstm.h5')
+model.save(MODEL_NAME)
