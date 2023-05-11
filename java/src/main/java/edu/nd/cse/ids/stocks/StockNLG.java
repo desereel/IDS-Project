@@ -62,6 +62,14 @@ public class StockNLG
 
 	}
 
+	public List<String> promptQuestion() {
+		this.docplanner.clearMessages();
+		this.docplanner.promptQuestion();
+		List<Message> documentPlan = this.docplanner.getMessages();
+		List<SPhraseSpec> sentences = this.microplanner.lexicalize(documentPlan);
+        return(this.realizer.realize(sentences));
+
+	}
 
 
 	public static void main(String[] args)
@@ -77,7 +85,15 @@ public class StockNLG
 		// System.out.println(ticker);
 		//StockNLG stockNLG = new StockNLG("../data/stock_market_data/all/" + ticker + ".csv");
 		StockNLG stockNLG = new StockNLG();
-		System.out.println("What would you like to learn about that stock?");
+	//	System.out.println("What would you like to learn about that stock?");
+
+		List<String> answer = stockNLG.promptQuestion();
+
+		for(String sentence: answer)
+		{
+			System.out.println(sentence);
+		}
+
 		while (true) {
 
 			Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
@@ -87,7 +103,7 @@ public class StockNLG
 				return;
 			}
 			Matcher matcher = pattern.matcher(question);
-			List<String> answer;
+			//List<String> answer;
 			if (matcher.find() ){
 				answer = stockNLG.askQuestion(question, ticker, matcher.group());
 			} else {
