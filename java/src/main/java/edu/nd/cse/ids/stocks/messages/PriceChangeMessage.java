@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class TrendMessage extends Message
+public class PriceChangeMessage extends Message
 {
-    private String trend;
+    private String change;
 
-    public TrendMessage() {}
+    public PriceChangeMessage() {}
 
     public void generate(String ticker) {
 
         String pythonInterpreter = "python3";
-        String pythonScript = "../python/messages/TrendMessage.py";
+        String pythonScript = "../python/messages/PriceChange.py";
 
         List<String> command = new ArrayList<>();
         command.add(pythonInterpreter);
@@ -37,22 +37,22 @@ public class TrendMessage extends Message
             String line;
 
             while ((line = reader.readLine()) != null){
-                setTrend(line);
+                setChange(line);
             }
 
             reader.close();
 
         } catch ( Exception e) {
             e.printStackTrace();
-   
+
         }
     }
 
-    public void setTrend(String trend) {
-        this.trend = trend;
+    public void setChange(String change) {
+        this.change = change;
     }
-    public String getTrend() {
-        return this.trend;
+    public String getChange() {
+        return this.change;
     }
 
 }

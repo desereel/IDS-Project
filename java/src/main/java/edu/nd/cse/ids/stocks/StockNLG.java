@@ -19,19 +19,23 @@ import simplenlg.realiser.english.*;
 import simplenlg.phrasespec.*;
 import simplenlg.features.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StockNLG
 {
-	private StockReader reader;
+//	private StockReader reader;
 	private DocumentPlanner docplanner;
 	private MicroPlanner microplanner;
 	private Realizer realizer;
 
-	public StockNLG(String datfile)
+//	private static final String DATE_PATTERN = "^(\\d{4})-(\\d{2})-(\\d{2})$";
+	public StockNLG()
 	{
 		// Note: This will be changed, final version will not take in a datfile as we do not yet know which stock to look at (thus which file)
 
-		this.reader = new StockReader();
-		this.reader.readStockEntry(datfile);
+//		this.reader = new StockReader();
+//		this.reader.readStockEntry(ticker);
 
 		this.docplanner = new DocumentPlanner();
 
@@ -42,13 +46,13 @@ public class StockNLG
 	}
 
 	// Note: Will need to be changed to include a "stockIn" input when program detects stock
-	public List<String> askQuestion(String question) {
-		List<StockEntry> stockHistory = this.reader.getStockHistory();
+	public List<String> askQuestion(String question, String ticker, String date) {
+		//List<StockEntry> stockHistory = this.reader.getStockHistory();
 
 		this.docplanner.clearMessages();
 
 		// question = "Why am I using a test question?";
-		this.docplanner.answerQuestion(stockHistory, question);
+		this.docplanner.answerQuestion(question, ticker, date);
 
         List<Message> documentPlan = this.docplanner.getMessages();
 
@@ -71,14 +75,24 @@ public class StockNLG
 		System.out.println("What is the ticker for the stock you would like to look at today?");
 		ticker = scanner.nextLine().trim().toUpperCase();
 		// System.out.println(ticker);
-		StockNLG stockNLG = new StockNLG("../data/stock_market_data/all/" + ticker + ".csv");
+		//StockNLG stockNLG = new StockNLG("../data/stock_market_data/all/" + ticker + ".csv");
+		StockNLG stockNLG = new StockNLG();
 		System.out.println("What would you like to learn about that stock?");
 		while (true) {
+
+			Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+
 			question = scanner.nextLine().trim();
 			if(question.contains("quit")){
 				return;
 			}
-			List<String> answer = stockNLG.askQuestion(question); 
+			Matcher matcher = pattern.matcher(question);
+			List<String> answer;
+			if (matcher.find() ){
+				answer = stockNLG.askQuestion(question, ticker, matcher.group());
+			} else {
+				answer = stockNLG.askQuestion(question, ticker, null); 
+			}
 			for(String sentence: answer)
 			{
 				System.out.println(sentence);

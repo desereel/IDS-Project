@@ -36,9 +36,11 @@ public class DocumentPlanner
 {
 
 	private List<Message> messages;
+
+	final String[] basicMessages = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
     
-	// private static final String API_KEY = "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";
-    private static final String API_KEY = "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";
+	private static final String API_KEY = "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";
+    //private static final String API_KEY = "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";
     private static final String MODEL_NAME = "text-davinci-003";
     private static final double TEMPERATURE = 0;
     private static final int MAX_TOKENS = 64;
@@ -104,7 +106,7 @@ public class DocumentPlanner
 		return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
     }
 
-	public void answerQuestion(List<StockEntry> stockHistory, String question) {
+	public void answerQuestion(String question, String ticker, String date) {
 
 
         Map<String, List<String>> categories = new HashMap<>();
@@ -124,18 +126,44 @@ public class DocumentPlanner
             e.printStackTrace();
         }
 
-		String category = output.substring(output.indexOf("text"));
+		
+		String category = output;
+		System.out.println(category);
 
-		if(category.contains("text:history")){
+		if(category.contains("text:volume")){
 			VolumeMessage m1 = new VolumeMessage();
-			String date = "12-12-1980";
-			m1.generate(stockHistory, date);
+			m1.generate(ticker, date);
+			this.messages.add(m1);
+		}
+		if(category.contains("text:currPrice")){
+			CurrPriceMessage m1 = new CurrPriceMessage();
+			m1.generate(ticker);
+			this.messages.add(m1);
+		}
+		if(category.contains("text:dividend")){
+			DividendMessage m1 = new DividendMessage();
+			m1.generate(ticker);
+			this.messages.add(m1);
+		}
+		if(category.contains("chart:candle")){
+			CandleChartMessage m1 = new CandleChartMessage();
+			m1.generate(ticker);
+			this.messages.add(m1);
+		}
+		if(category.contains("text:news")){
+			NewsMessage m1 = new NewsMessage();
+			m1.generate(ticker);
+			this.messages.add(m1);
+		}
+		if(category.contains("text:events")){
+			EventsMessage m1 = new EventsMessage();
+			m1.generate(ticker);
 			this.messages.add(m1);
 		}
         if(category.contains("text:trend")) {
             TrendMessage m1 = new TrendMessage();
             int period = 5; // must pull from prompts
-            m1.generate(stockHistory, period);
+            m1.generate(ticker);
             this.messages.add(m1);
             // prep for next question
             this.questionsFile = "trendQuestions.txt";
@@ -143,7 +171,7 @@ public class DocumentPlanner
         if(category.contains("trend:week")){
             TrendMessage m1 = new TrendMessage();
             int period = 5; // average number of trading days in a week
-            m1.generate(stockHistory, period);
+            m1.generate(ticker);
             this.messages.add(m1);
             // prep for next question
             this.questionsFile = "trendQuestions.txt";
@@ -151,13 +179,16 @@ public class DocumentPlanner
         if(category.contains("trend:month")){
             TrendMessage m1 = new TrendMessage();
             int period = 21; // average number of trading days in a month
-            m1.generate(stockHistory, period);
+            m1.generate(ticker);
             this.messages.add(m1);
             // prep for next question
             this.questionsFile = "trendQuestions.txt";
         }
-
-
+		if(category.contains("text:priceChange")){
+			PriceChangeMessage m1 = new PriceChangeMessage();
+			m1.generate(ticker);
+			this.messages.add(m1);
+		}
     }
 
     public List<Message> getMessages()

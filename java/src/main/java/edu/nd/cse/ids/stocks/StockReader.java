@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.HashMap;
 import java.io.FileReader;
 
-public class StockReader
+/*public class StockReader
 {
-	private List<StockEntry> stockHistory;
+	private String stock;
 
 	public StockReader()
 	{
-		stockHistory = null;
+		stock = null;
 	}
 
-	public void readStockEntry(String filename)
+	public void readStockEntry(String ticker)
 	{
 		try {
 			this.stockHistory = new CsvToBeanBuilder(new FileReader(filename)).withType(StockEntry.class).build().parse();
@@ -23,10 +23,17 @@ public class StockReader
 		{
 			System.out.println(ex);
 		}
+
+		try {
+			this.stock = YahooFinance.get("AAPL");
+		} catch (Exception ex){
+			System.out.println(ex);
+		}
+
 	}
 
-	public List<StockEntry> getStockHistory()
+	public String getStock()
 	{
-		return this.stockHistory;
+		return this.stock;
 	}
-}
+}*/

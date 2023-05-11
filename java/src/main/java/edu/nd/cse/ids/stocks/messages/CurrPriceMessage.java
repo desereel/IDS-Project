@@ -11,19 +11,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-
-public class TrendMessage extends Message
+public class CurrPriceMessage extends Message
 {
-    private String trend;
+    private double price;
 
-    public TrendMessage() {}
+    public CurrPriceMessage() {}
 
     public void generate(String ticker) {
 
         String pythonInterpreter = "python3";
-        String pythonScript = "../python/messages/TrendMessage.py";
+        String pythonScript = "../python/messages/CurrPriceMessage.py";
 
         List<String> command = new ArrayList<>();
         command.add(pythonInterpreter);
@@ -37,7 +34,7 @@ public class TrendMessage extends Message
             String line;
 
             while ((line = reader.readLine()) != null){
-                setTrend(line);
+                setPrice(Double.parseDouble(line));
             }
 
             reader.close();
@@ -48,11 +45,11 @@ public class TrendMessage extends Message
         }
     }
 
-    public void setTrend(String trend) {
-        this.trend = trend;
+    public void setPrice(double price) {
+        this.price = price;
     }
-    public String getTrend() {
-        return this.trend;
+    public double getPrice() {
+        return this.price;
     }
 
 }

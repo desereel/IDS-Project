@@ -11,19 +11,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-
-public class TrendMessage extends Message
+public class DividendMessage extends Message
 {
-    private String trend;
+    private double dividend;
 
-    public TrendMessage() {}
+    public DividendMessage() {}
 
     public void generate(String ticker) {
 
         String pythonInterpreter = "python3";
-        String pythonScript = "../python/messages/TrendMessage.py";
+        String pythonScript = "../python/messages/DividendMessage.py";
 
         List<String> command = new ArrayList<>();
         command.add(pythonInterpreter);
@@ -37,23 +34,21 @@ public class TrendMessage extends Message
             String line;
 
             while ((line = reader.readLine()) != null){
-                setTrend(line);
+                setDividend(Double.parseDouble(line));
             }
 
             reader.close();
 
         } catch ( Exception e) {
             e.printStackTrace();
-   
+
         }
     }
 
-    public void setTrend(String trend) {
-        this.trend = trend;
+    public void setDividend(double dividend) {
+        this.dividend = dividend;
     }
-    public String getTrend() {
-        return this.trend;
-    }
-
+    public double getDividend() {
+        return this.dividend;
+	}
 }
-

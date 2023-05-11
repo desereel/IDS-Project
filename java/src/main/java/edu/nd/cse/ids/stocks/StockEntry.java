@@ -6,7 +6,13 @@ import com.opencsv.bean.CsvBindByName;
 
 public class StockEntry 
 {
-	@CsvBindByName
+
+/*	Stock stock = YahooFinance.get(ticker);
+	private double Price;
+
+	public double getPrice(){
+*/		
+/*	@CsvBindByName
 	private String Date;
 
 	@CsvBindByName
@@ -60,5 +66,5 @@ public class StockEntry
 	public double getAdjusted()
 	{
 		return Adjusted_Close;
-	}
+	}*/
 } 
