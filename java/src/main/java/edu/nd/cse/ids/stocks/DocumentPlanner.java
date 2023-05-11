@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class DocumentPlanner
@@ -57,7 +59,6 @@ public class DocumentPlanner
             ex.printStackTrace();
         }
         messages = new LinkedList<Message>();
-    //    this.stock = stock;
 	}
 
     public void switchModel(String modelName, String tokName, String[] messageList){
@@ -104,14 +105,25 @@ public class DocumentPlanner
         return(newseq);
     }
 
-    public void promptQuestion(){
+    public void promptQuestion(String ticker){
         PromptMessage m0 = new PromptMessage();
-        m0.generate(this.stock);
+        m0.generate(ticker);
         this.messages.add(m0);
         return;
     }
 
-	public void answerQuestion(String question, String ticker, String date) {
+	public void answerQuestion(String question, String ticker) {
+
+		String date;
+		Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+		Matcher matcher = pattern.matcher(question);
+
+		if ( matcher.find() ){
+			date = matcher.group();
+		} else {
+			date = null;
+		}
+
         // use the tokenizer to create a vectorized representation of the question
         Preprocess preproc = new Preprocess();
         String rformatted = preproc.preprocess(question);
@@ -130,18 +142,9 @@ public class DocumentPlanner
             input.putScalar(new int[] {i}, newseq[i]);
         }
 
-        // System.out.println(input);
         INDArray output = model.output(input);
 
         int messageNum = output.argMax(1).getInt();
-
-        // create message list that includes the message types necessary to answer the question
-        // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
-
-        // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
-
-        // System.out.println(question);
-        System.out.println(messageList[messageNum]);
 
         switch(messageList[messageNum]) {
             case "text:trend":
@@ -250,7 +253,7 @@ public class DocumentPlanner
                 break;
             case "modify:done":
                 switchModel("basicModel.h5", "basicTok.json",basicMessages);
-                promptQuestion();
+                promptQuestion(ticker);
                 break;
             case "text:priceChange":
                 PriceChangeMessage m17 = new PriceChangeMessage();
@@ -266,63 +269,6 @@ public class DocumentPlanner
         return;
     }
 
-
-	// public void answerQuestion(List<StockEntry> stockHistory, String question) {
-
-    //     classifyResponse(question);
-    //     // Map<String, List<String>> categories = new HashMap<>();
-		
-	// 	// String fileContents = "";
-	// 	// try (Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/" + questionsFile))) {
-    // 	// 	fileContents = scanner.useDelimiter("\\A").next();
-	// 	// } catch (Exception e) {
-    // 	// 	e.printStackTrace();
-	// 	// }
-
-    //     // String output = "";
-
-	// 	// try {
-    //     //     output = classify(question, fileContents);
-    //     // } catch (Exception e){
-    //     //     e.printStackTrace();
-    //     // }
-
-	// 	// // String category = output.substring(output.indexOf("text"));
-	// 	// String category = output;
-
-	// 	// if(category.contains("text:history")){
-	// 	// 	VolumeMessage m1 = new VolumeMessage();
-	// 	// 	String date = "12-12-1980";
-	// 	// 	m1.generate(stockHistory, date);
-	// 	// 	this.messages.add(m1);
-	// 	// }
-    //     // if(category.contains("text:trend")) {
-    //     //     TrendMessage m1 = new TrendMessage();
-    //     //     int period = 5; // must pull from prompts
-    //     //     m1.generate(stockHistory, period);
-    //     //     this.messages.add(m1);
-    //     //     // prep for next question
-    //     //     this.questionsFile = "trendQuestions.txt";
-    //     // }
-    //     // if(category.contains("trend:week")){
-    //     //     TrendMessage m1 = new TrendMessage();
-    //     //     int period = 5; // average number of trading days in a week
-    //     //     m1.generate(stockHistory, period);
-    //     //     this.messages.add(m1);
-    //     //     // prep for next question
-    //     //     this.questionsFile = "trendQuestions.txt";
-    //     // }
-    //     // if(category.contains("trend:month")){
-    //     //     TrendMessage m1 = new TrendMessage();
-    //     //     int period = 21; // average number of trading days in a month
-    //     //     m1.generate(stockHistory, period);
-    //     //     this.messages.add(m1);
-    //     //     // prep for next question
-    //     //     this.questionsFile = "trendQuestions.txt";
-    //     // }
-
-
-    // }
 
     public List<Message> getMessages()
     {

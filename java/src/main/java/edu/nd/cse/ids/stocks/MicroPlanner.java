@@ -101,15 +101,12 @@ public class MicroPlanner
         SPhraseSpec s1 = nlgFactory.createClause();
 
 		s1.setSubject("you");
-		s1.addComplement("want");
-		s1.addComplement("to");
-		s1.addComplement("learn");
-		s1.addComplement("more");
-		s1.addComplement("about");
-		s1.addComplement("the");
-		s1.addComplement("tend");
-		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setVerb("want");
+		s1.addComplement("to learn more about the trend");
+
 		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		s1.setFeature(Feature.TENSE, Tense.PRESENT);
+		
 		return s1;
 	}
 
@@ -118,16 +115,12 @@ public class MicroPlanner
         SPhraseSpec s1 = nlgFactory.createClause();
 
 		s1.setSubject("you");
-		s1.addComplement("want");
-		s1.addComplement("to");
-		s1.addComplement("learn");
-		s1.addComplement("more");
-		s1.addComplement("about");
-		s1.addComplement("the");
-		s1.addComplement("price");
-		s1.addComplement("change");
-		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setVerb("want");
+		s1.addComplement("to learn more about the price change");
+		
 		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		s1.setFeature(Feature.TENSE, Tense.PRESENT);
+		
 		return s1;
 	}
 
@@ -135,14 +128,13 @@ public class MicroPlanner
 	{
         SPhraseSpec s1 = nlgFactory.createClause();
 
-		s1.setSubject("you");
-		s1.addComplement("want");
-		s1.addComplement("to");
-		s1.addComplement("learn");
-		s1.addComplement("about");
-		s1.addComplement(message.getStock());
-		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setSubject(nlgFactory.createNounPhrase("you"));
+		s1.setVerb("want");
+		s1.addComplement("to learn about " + message.getStock());
+		
 		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT);
+		s1.setFeature(Feature.TENSE, Tense.PRESENT);
+
 		return s1;
 	}
 
