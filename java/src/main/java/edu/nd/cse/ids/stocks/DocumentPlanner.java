@@ -59,7 +59,6 @@ public class DocumentPlanner
             ex.printStackTrace();
         }
         messages = new LinkedList<Message>();
-    //    this.stock = stock;
 	}
 
     public void switchModel(String modelName, String tokName, String[] messageList){
@@ -106,9 +105,9 @@ public class DocumentPlanner
         return(newseq);
     }
 
-    public void promptQuestion(){
+    public void promptQuestion(String ticker){
         PromptMessage m0 = new PromptMessage();
-        m0.generate(this.stock);
+        m0.generate(ticker);
         this.messages.add(m0);
         return;
     }
@@ -254,7 +253,7 @@ public class DocumentPlanner
                 break;
             case "modify:done":
                 switchModel("basicModel.h5", "basicTok.json",basicMessages);
-                promptQuestion();
+                promptQuestion(ticker);
                 break;
             case "text:priceChange":
                 PriceChangeMessage m17 = new PriceChangeMessage();

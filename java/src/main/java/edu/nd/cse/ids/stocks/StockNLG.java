@@ -50,9 +50,9 @@ public class StockNLG
 
 	}
 
-	public List<String> promptQuestion() {
+	public List<String> promptQuestion(String ticker) {
 		this.docplanner.clearMessages();
-		this.docplanner.promptQuestion();
+		this.docplanner.promptQuestion(ticker);
 		List<Message> documentPlan = this.docplanner.getMessages();
 		List<SPhraseSpec> sentences = this.microplanner.lexicalize(documentPlan);
         return(this.realizer.realize(sentences));
@@ -71,7 +71,7 @@ public class StockNLG
 		ticker = scanner.nextLine().trim().toUpperCase();
 
 		StockNLG stockNLG = new StockNLG();
-		List<String> answer = stockNLG.promptQuestion();
+		List<String> answer = stockNLG.promptQuestion(ticker);
 
 		for(String sentence: answer)
 		{

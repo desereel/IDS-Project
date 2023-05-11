@@ -13,6 +13,7 @@ public class PromptMessage extends Message
 	public PromptMessage() {}
 
 	public void generate(String stock) {
+		System.out.println(stock);
         this.stock = stock;
 	}
 
