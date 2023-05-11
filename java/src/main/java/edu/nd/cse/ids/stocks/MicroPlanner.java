@@ -175,14 +175,12 @@ public class MicroPlanner
 	public SPhraseSpec handleMessage(CandleChartMessage message)
 	{
 	
-		//message.getChart();
-
 		SPhraseSpec s1 = nlgFactory.createClause();
 
 		s1.setSubject("The candle chart");
-		s1.setVerb("is");
+		s1.setVerb("has");
+		s1.addComplement("printed");
 
-		//s1.setObject(message.getChart());		
 		return s1;
 	}
 

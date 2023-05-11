@@ -21,7 +21,7 @@ public class CandleChartMessage extends Message
     public void generate(String ticker) {
 
         String pythonInterpreter = "python3";
-        String pythonScript = "../python/messages/CandleChartMessage.py";
+        String pythonScript = "../python/messages/CandleCharts.py";
 
         List<String> command = new ArrayList<>();
         command.add(pythonInterpreter);
@@ -41,14 +41,14 @@ public class CandleChartMessage extends Message
             reader.close();
 			process.waitFor();
 
-            // check if chart.png file exists
+/*            // check if chart.png file exists
             File chartFile = new File("../python/messages/chart.png");
             if (chartFile.exists()) {
                 System.out.println("Chart generated successfully");
             } else {
                 System.out.println("Failed to generate chart");
             }
-
+*/
 
         } catch ( Exception e) {
             e.printStackTrace();
