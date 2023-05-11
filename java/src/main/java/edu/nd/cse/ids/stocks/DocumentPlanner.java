@@ -141,7 +141,7 @@ public class DocumentPlanner
         // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
         // System.out.println(question);
-        // System.out.println(messageList[messageNum]);
+        System.out.println(messageList[messageNum]);
 
         switch(messageList[messageNum]) {
             case "text:trend":
@@ -154,13 +154,43 @@ public class DocumentPlanner
                 this.messages.add(m2);
                 this.lastMessage = m1;
                 break;
+			case "text:events":
+				EventsMessage m3 = new EventsMessage();
+				m3.generate(ticker);
+				this.messages.add(m3);
+				break;
+			case "text:volume":
+				VolumeMessage m4 = new VolumeMessage();
+				m4.generate(ticker, date);
+				this.messages.add(m4);
+				break;
+			case "text:currPrice":
+				CurrPriceMessage m5 = new CurrPriceMessage();
+				m5.generate(ticker);
+				this.messages.add(m5);
+				break;
+			case "text:dividend":
+				DividendMessage m6 = new DividendMessage();
+				m6.generate(ticker);
+				this.messages.add(m6);
+				break;
+			case "text:news":
+				NewsMessage m7 = new NewsMessage();
+				m7.generate(ticker);
+				this.messages.add(m7);
+				break;
+			case "chart:candle":
+				CandleChartMessage m8 = new CandleChartMessage();
+				m8.generate(ticker);
+				this.messages.add(m8);		
+				break;		
             case "modify:week":
                 if(this.lastMessage instanceof TrendMessage) {
                     ((TrendMessage) this.lastMessage).generate(ticker);
                     this.messages.add((TrendMessage) this.lastMessage);
-                    TrendPromptMessage m3 = new TrendPromptMessage();
-                    m3.generate();
-                    this.messages.add(m3);
+                    TrendPromptMessage m9 = new TrendPromptMessage();
+                    m9.generate();
+                    this.messages.add(m9);
                 }
                 if(this.lastMessage instanceof PriceChangeMessage) {
                     ((PriceChangeMessage) this.lastMessage).generate(ticker);
@@ -174,9 +204,9 @@ public class DocumentPlanner
                 if(this.lastMessage instanceof TrendMessage) {
                     ((TrendMessage) this.lastMessage).generate(ticker);
                     this.messages.add((TrendMessage) this.lastMessage);
-                    TrendPromptMessage m3 = new TrendPromptMessage();
-                    m3.generate();
-                    this.messages.add(m3);
+                    TrendPromptMessage m12 = new TrendPromptMessage();
+                    m12.generate();
+                    this.messages.add(m12);
                 }
                 if(this.lastMessage instanceof PriceChangeMessage) {
                     ((PriceChangeMessage) this.lastMessage).generate(ticker);
@@ -190,32 +220,32 @@ public class DocumentPlanner
                 if(this.lastMessage instanceof TrendMessage) {
                     ((TrendMessage) this.lastMessage).generate(ticker);
                     this.messages.add((TrendMessage) this.lastMessage);
-                    TrendPromptMessage m4 = new TrendPromptMessage();
-                    m4.generate();
-                    this.messages.add(m4);
+                    TrendPromptMessage m13 = new TrendPromptMessage();
+                    m13.generate();
+                    this.messages.add(m13);
                 }
                 if(this.lastMessage instanceof PriceChangeMessage) {
                     ((PriceChangeMessage) this.lastMessage).generate(ticker);
                     this.messages.add((PriceChangeMessage) this.lastMessage);
-                    PriceChangePromptMessage m9 = new PriceChangePromptMessage();
-                    m9.generate();
-                    this.messages.add(m9);
+                    PriceChangePromptMessage m14 = new PriceChangePromptMessage();
+                    m14.generate();
+                    this.messages.add(m14);
                 }
                 break;
             case "modify:year":
                 if(this.lastMessage instanceof TrendMessage) {
                     ((TrendMessage) this.lastMessage).generate(ticker);
                     this.messages.add((TrendMessage) this.lastMessage);
-                    TrendPromptMessage m5 = new TrendPromptMessage();
-                    m5.generate();
-                    this.messages.add(m5);
+                    TrendPromptMessage m15 = new TrendPromptMessage();
+                    m15.generate();
+                    this.messages.add(m15);
                 }
                 if(this.lastMessage instanceof PriceChangeMessage) {
                     ((PriceChangeMessage) this.lastMessage).generate(ticker);
                     this.messages.add((PriceChangeMessage) this.lastMessage);
-                    PriceChangePromptMessage m8 = new PriceChangePromptMessage();
-                    m8.generate();
-                    this.messages.add(m8);
+                    PriceChangePromptMessage m16 = new PriceChangePromptMessage();
+                    m16.generate();
+                    this.messages.add(m16);
                 }
                 break;
             case "modify:done":
@@ -223,14 +253,14 @@ public class DocumentPlanner
                 promptQuestion();
                 break;
             case "text:priceChange":
-                PriceChangeMessage m6 = new PriceChangeMessage();
-                m6.generate(ticker);
-                this.messages.add(m6);
-                this.lastMessage = m6;
+                PriceChangeMessage m17 = new PriceChangeMessage();
+                m17.generate(ticker);
+                this.messages.add(m17);
+                this.lastMessage = m17;
                 switchModel("modifyModel.h5", "modifyTok.json",modifyMessages);
-                PriceChangePromptMessage m7 = new PriceChangePromptMessage();
-                m7.generate();
-                this.messages.add(m7);
+                PriceChangePromptMessage m18 = new PriceChangePromptMessage();
+                m18.generate();
+                this.messages.add(m18);
                 break;
         }
         return;
