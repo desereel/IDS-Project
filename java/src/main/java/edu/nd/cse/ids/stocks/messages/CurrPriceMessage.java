@@ -34,6 +34,7 @@ public class CurrPriceMessage extends Message
             String line;
 
             while ((line = reader.readLine()) != null){
+				System.out.println(line);
                 setPrice(Double.parseDouble(line));
             }
 
