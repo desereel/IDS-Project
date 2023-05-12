@@ -139,10 +139,10 @@ public class DocumentPlanner
         // create message list that includes the message types necessary to answer the question
         // message order is from ['numBedroom', 'numBathroom', 'numBeds', 'numGuests', 'itemCount', 'includesList', 'viewType', 'houseLocation', 'travelDistance', 'petsAllowed', 'itemFeatures', 'greeting', 'roomType', 'detailMessage']
 
-        // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
+        // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history", "done"};
 
         // System.out.println(question);
-        System.out.println(messageList[messageNum]);
+        // System.out.println(messageList[messageNum]);
 
         switch(messageList[messageNum]) {
             case "text:trend":
