@@ -17,16 +17,7 @@ To get a local copy up and running follow these simple example steps.
 
 ## Prerequisites
 
-1. Ensure listed Python dependency is installed locally
-
-2. Ensure listed Java dependency is installed locally
-
-3. Ensure listed Maven dependency is installed locally
-
-4. Install the NSEpy library to extract historical and realtime data from NSE's website
-   ```sh
-   pip install nsepy
-   ```
+1. Use the student machines to ensure that the correct dependancies are installed (we had significant issues running the program on local machines)
 
 ### Installation
 

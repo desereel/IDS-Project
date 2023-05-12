@@ -38,6 +38,7 @@ chart:candle,What does the 6-month candlestick chart for Amazon look like?
 chart:candle,Could you provide me with a candlestick chart of Amazon's past 6 months?
 chart:candle,Show me the 6-month candlestick chart for Amazon's stock.
 chart:candle,I'd like to see the candlestick chart for Amazon's stock over the last 6 months.
+chart:candle,Show me a chart
 text:trend,Is Amazon experiencing a downward trend this weeK?
 text:trend,Amazon downward trend?
 text:trend,is Amazon showing a downward trend currently?
@@ -58,6 +59,7 @@ text:currPrice,Can you tell me the value of Amazon's stock per share right now?
 text:currPrice,How much does Amazon's stock currently cost per share?
 text:currPrice,What is the current market price of Amazon's shares?
 text:currPrice,What is the current value of a share of Amazon's stock?
+text:currPrice,What is the price today?
 text:priceChange,How much has Amazon's stock price changed over the past week?
 text:priceChange,Can you provide me with the percentage change in Amazon's stock price for the previous week?
 text:priceChange,What was the percentage change in Amazon's stock price for the week that just ended?
@@ -98,3 +100,9 @@ text:history,Can you provide me with the share value of Amazon on Friday the 3rd
 text:history,How much did Amazon's stock cost per share on Friday the 3rd?
 text:history,What was the price of Amazon's shares last Friday?
 text:history,What was the value of Amazon's stock at the end of the week?
+quit,quit
+quit,done
+quit,exit 
+quit,I am done
+quit,No thank you
+quit,Thank you

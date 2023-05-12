@@ -36,7 +36,7 @@ import org.json.JSONObject;
 
 public class DocumentPlanner
 {
-    final String[] basicMessages = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
+    final String[] basicMessages = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history", "quit"};
     final String[] modifyMessages = {"modify:week", "modify:month", "modify:year", "modify:day", "modify:done"};
     private List<Message> messages;
     private MultiLayerNetwork model;
@@ -45,7 +45,8 @@ public class DocumentPlanner
     private String ticker;
     private Message lastMessage;
     private String stock; 
-	
+	public int cont = 1;
+
 	public DocumentPlanner(String stock)
 	{
         try {
@@ -141,7 +142,7 @@ public class DocumentPlanner
         // String[] messageList = {"text:topFive", "text:dividend", "text:volume", "chart:candle", "text:trend", "text:currPrice", "text:priceChange", "text:events", "text:news", "text:history"};
 
         // System.out.println(question);
-        // System.out.println(messageList[messageNum]);
+        System.out.println(messageList[messageNum]);
 
         switch(messageList[messageNum]) {
             case "text:trend":
@@ -169,6 +170,13 @@ public class DocumentPlanner
                     m11.generate();
                     this.messages.add(m11);
                 }
+                if(this.lastMessage instanceof VolumeMessage) {
+                    ((VolumeMessage) this.lastMessage).generate(stockHistory, 5);
+                    this.messages.add((VolumeMessage) this.lastMessage);
+                    VolumePromptMessage m16 = new VolumePromptMessage();
+                    m16.generate();
+                    this.messages.add(m16);
+                }
                 break;
             case "modify:month":
                 if(this.lastMessage instanceof TrendMessage) {
@@ -184,6 +192,13 @@ public class DocumentPlanner
                     PriceChangePromptMessage m10 = new PriceChangePromptMessage();
                     m10.generate();
                     this.messages.add(m10);
+                }
+                if(this.lastMessage instanceof VolumeMessage) {
+                    ((VolumeMessage) this.lastMessage).generate(stockHistory, 21);
+                    this.messages.add((VolumeMessage) this.lastMessage);
+                    VolumePromptMessage m17 = new VolumePromptMessage();
+                    m17.generate();
+                    this.messages.add(m17);
                 }
                 break;
             case "modify:day":
@@ -201,6 +216,13 @@ public class DocumentPlanner
                     m9.generate();
                     this.messages.add(m9);
                 }
+                if(this.lastMessage instanceof VolumeMessage) {
+                    ((VolumeMessage) this.lastMessage).generate(stockHistory, 1);
+                    this.messages.add((VolumeMessage) this.lastMessage);
+                    VolumePromptMessage m18 = new VolumePromptMessage();
+                    m18.generate();
+                    this.messages.add(m18);
+                }
                 break;
             case "modify:year":
                 if(this.lastMessage instanceof TrendMessage) {
@@ -217,6 +239,13 @@ public class DocumentPlanner
                     m8.generate();
                     this.messages.add(m8);
                 }
+                if(this.lastMessage instanceof VolumeMessage) {
+                    ((VolumeMessage) this.lastMessage).generate(stockHistory, 252);
+                    this.messages.add((VolumeMessage) this.lastMessage);
+                    VolumePromptMessage m19 = new VolumePromptMessage();
+                    m19.generate();
+                    this.messages.add(m19);
+                }
                 break;
             case "modify:done":
                 switchModel("basicModel.h5", "basicTok.json",basicMessages);
@@ -232,6 +261,53 @@ public class DocumentPlanner
                 m7.generate();
                 this.messages.add(m7);
                 break;
+            case "quit":
+                QuitMessage m8 = new QuitMessage();
+                m8.generate();
+                this.messages.add(m8);
+                cont = 0;
+                break;
+            case "text:currPrice":
+                CurrPriceMessage m9 = new CurrPriceMessage();
+                m9.generate(this.stock);
+                this.messages.add(m9);
+                promptQuestion();
+                break;
+            case "text:news":
+                NewsMessage m10 = new NewsMessage();
+                m10.generate(this.stock);
+                this.messages.add(m10);
+                promptQuestion();
+                break;
+            case "text:dividend":
+                DividendMessage m11 = new DividendMessage();
+                m11.generate(this.stock);
+                this.messages.add(m11);
+                promptQuestion();
+                break;
+            case "chart:candle":
+                CandleChartMessage m12 = new CandleChartMessage();
+                m12.generate(this.stock);
+                this.messages.add(m12);
+                promptQuestion();
+                break;
+            case "text:events":
+                EventsMessage m13 = new EventsMessage();
+                m13.generate(this.stock);
+                this.messages.add(m13);
+                promptQuestion();
+                break;
+            case "text:volume":
+                VolumeMessage m14 = new VolumeMessage();
+                m14.generate(stockHistory, 5);
+                this.messages.add(m14);
+                this.lastMessage = m14;
+                switchModel("modifyModel.h5", "modifyTok.json",modifyMessages);
+                VolumePromptMessage m15 = new VolumePromptMessage();
+                m15.generate();
+                this.messages.add(m15);
+                break;
+            
         }
         return;
     }

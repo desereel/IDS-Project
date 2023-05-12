@@ -9,33 +9,40 @@ import java.util.Arrays;
 
 public class VolumeMessage extends Message
 {
-    private String date;
-    private double volume;
+    private String period;
+    private int volume;
 
     public VolumeMessage() {}
 
-    public void generate(List<StockEntry> stockHistory, String date) {
+    public void generate(List<StockEntry> stockHistory, int period) {
 
-		for (StockEntry entry : stockHistory){
-			if (entry.getDate().equals(date)) {
-				setVolume(entry.getVolume());
-				break;
-			}
+		// for (StockEntry entry : stockHistory){
+		// 	if (entry.getDate().equals(date)) {
+		// 		setVolume(entry.getVolume());
+		// 		break;
+		// 	}
+		// }
+        for (int i = 0; i < period; i ++){
+		    this.volume += stockHistory.get(stockHistory.size() - 1 - period).getVolume();
+        }
+        if(period == 5){
+			setPeriod("week");
+		} else if (period == 21) {
+			setPeriod("month");
+		} else if (period == 1) {
+			setPeriod("day");
+		} else {
+			setPeriod("year");
 		}
-
-		
 	}
-    public void setDate(String date) {
-        this.date = date;
-    }
-    public void setVolume(double volume) {
-        this.volume = volume;
-    }
+  	public void setPeriod(String period) {
+		this.period = period;
+	}
 
-    public String getDate() {
-        return this.date;
+    public String getPeriod() {
+        return this.period;
     }
-    public double getVolume() {
+    public int getVolume() {
         return this.volume;
     }
 }

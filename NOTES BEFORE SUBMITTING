@@ -1,0 +1,5 @@
+1) cur price not working, returning a price of 0
+2) same with dividends 
+3) news works if NOT in a virtual env (such as the one collin has for creating models)
+4) if we have time make the candle chart save as a file so it will work on the student machines
+5) Events message not working correctly 

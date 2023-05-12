@@ -95,13 +95,16 @@ public class StockNLG
 
 		while (true) {
 			question = scanner.nextLine().trim();
-			if(question.contains("quit")){
-				return;
-			}
+			// if(question.contains("quit")){
+			// 	return;
+			// }
 			answer = stockNLG.askQuestion(question); 
 			for(String sentence: answer)
 			{
 				System.out.println(sentence);
+			}
+			if (stockNLG.docplanner.cont != 1){
+				return;
 			}
 		}
 	}

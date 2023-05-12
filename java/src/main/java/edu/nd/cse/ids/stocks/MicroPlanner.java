@@ -53,7 +53,34 @@ public class MicroPlanner
 			if (message instanceof PriceChangePromptMessage) {
 				SPhraseSpec s1 = handleMessage ((PriceChangePromptMessage) message);
 				phrases.add(s1);
-
+			}
+			if (message instanceof QuitMessage) {
+				SPhraseSpec s1 = handleMessage ((QuitMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof CurrPriceMessage) {
+				SPhraseSpec s1 = handleMessage((CurrPriceMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof NewsMessage) {
+				SPhraseSpec s1 = handleMessage((NewsMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof DividendMessage) {
+				SPhraseSpec s1 = handleMessage((DividendMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof CandleChartMessage) {
+				SPhraseSpec s1 = handleMessage((CandleChartMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof EventsMessage) {
+				SPhraseSpec s1 = handleMessage((EventsMessage) message);
+				phrases.add(s1);
+			}
+			if (message instanceof VolumePromptMessage) {
+				SPhraseSpec s1 = handleMessage((VolumePromptMessage) message);
+				phrases.add(s1);
 			}
 		}
 		return phrases;
@@ -79,6 +106,17 @@ public class MicroPlanner
 		return s1;
 	}
 
+	public SPhraseSpec handleMessage(QuitMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.addComplement("have");
+		s1.addComplement("a");
+		s1.addComplement("nice");
+		s1.addComplement("day");
+		return s1;
+	}
+
 	public SPhraseSpec handleMessage(TrendPromptMessage message)
 	{
         SPhraseSpec s1 = nlgFactory.createClause();
@@ -93,6 +131,36 @@ public class MicroPlanner
 		s1.addComplement("tend");
 		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
 		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(VolumePromptMessage message)
+	{
+        SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.setSubject("you");
+		s1.addComplement("want");
+		s1.addComplement("to");
+		s1.addComplement("learn");
+		s1.addComplement("more");
+		s1.addComplement("about");
+		s1.addComplement("the");
+		s1.addComplement("recent");
+		s1.addComplement("volume");
+		// s1.setFeature(Feature.TENSE, Tense.FUTURE);
+		s1.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(CurrPriceMessage message)
+	{
+		SPhraseSpec s1 = nlgFactory.createClause();
+		NumberFormat nf = new DecimalFormat("##.###");
+		
+		s1.setSubject("The share price");
+		s1.setVerb("is");
+		s1.setObject(nf.format(message.getPrice()));
+	
 		return s1;
 	}
 
@@ -156,13 +224,77 @@ public class MicroPlanner
     {
 
         SPhraseSpec s1 = nlgFactory.createClause();
-		NumberFormat nf = new DecimalFormat("##.###");
 
 		s1.setSubject("The volume");
+		s1.addComplement("of");
+		s1.addComplement("shares");
+		s1.addComplement("this");
+		s1.addComplement(message.getPeriod());
 		s1.setVerb("is");
-		s1.setObject(nf.format(message.getVolume()));
+		s1.setObject(String.valueOf(message.getVolume()));
 
         return s1;
     }
 
+	public SPhraseSpec handleMessage(NewsMessage message)
+	{
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String article : message.getArticles()){
+
+			sb.append(article).append(System.lineSeparator());
+		}
+
+		String result = sb.toString();
+
+		SPhraseSpec s1 = nlgFactory.createClause();
+		s1.setSubject("The articles");
+		s1.setVerb("are");
+		s1.setObject(result);
+		
+		return s1;
+	}
+	public SPhraseSpec handleMessage(DividendMessage message)
+	{
+		SPhraseSpec s1 = nlgFactory.createClause();
+		NumberFormat nf = new DecimalFormat("##.###");
+		
+		s1.setSubject("The current dividend value");
+		s1.setVerb("is");
+		s1.setObject(nf.format(message.getDividend()));
+
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(CandleChartMessage message)
+	{
+	
+		SPhraseSpec s1 = nlgFactory.createClause();
+
+		s1.setSubject("The candle chart");
+		s1.setVerb("has");
+		s1.addComplement("printed");
+
+		return s1;
+	}
+
+	public SPhraseSpec handleMessage(EventsMessage message)
+	{
+        StringBuilder sb = new StringBuilder();
+
+        for (String event : message.getEvents()){
+
+            sb.append(event).append(System.lineSeparator());
+        }
+
+        String result = sb.toString();
+
+        SPhraseSpec s1 = nlgFactory.createClause();
+        s1.setSubject("The events");
+        s1.setVerb("are");
+        s1.setObject(result);
+
+        return s1;
+	}
 }

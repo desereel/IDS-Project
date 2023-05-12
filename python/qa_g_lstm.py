@@ -26,7 +26,7 @@ MAX_SEQUENCE_LENGTH = 200
 # TOK_NAME = "../data/models/basicTok.json"
 # MODEL_NAME = "../data/models/basicModel.h5"
 # INPUT_NAME = "../data/questions.txt"
-# NUM_OPTIONS = 10
+# NUM_OPTIONS = 11
 # EPOCHS = 4
 
 TOK_NAME = "../data/models/modifyTok.json"
